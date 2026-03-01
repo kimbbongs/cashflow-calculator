@@ -371,6 +371,27 @@ function formatMoney(man) {
   return Math.round(man).toLocaleString() + '만원';
 }
 
+function parseInputNumber(id, fallback) {
+  const value = parseFloat(document.getElementById(id).value);
+  return isNaN(value) ? fallback : value;
+}
+
+function calcRequiredAsset(targetMonthly, incomePct, netYield) {
+  const denominator = (incomePct / 100) * (netYield / 100);
+  if (!isFinite(targetMonthly) || targetMonthly < 0) return 0;
+  if (!isFinite(denominator) || denominator <= 0) return 0;
+  return Math.round((targetMonthly * 12) / denominator);
+}
+
+function calcPresetMix(preset) {
+  let incomePct = 0, growthPct = 0;
+  preset.items.forEach(it => {
+    if (it.isGrowth) growthPct += it.pct;
+    else incomePct += it.pct;
+  });
+  return { incomePct, growthPct };
+}
+
 function calcPresetNetYield(preset) {
   let totalIncomePct = 0, weightedRate = 0;
   preset.items.forEach(it => {
@@ -399,21 +420,21 @@ function calcPresetGrossYield(preset) {
 }
 
 function updatePresets() {
-  const rawTarget = parseFloat(document.getElementById('targetMonthly').value);
-  const target = isNaN(rawTarget) ? 100 : rawTarget;
+  const target = parseInputNumber('targetMonthly', 100);
   const container = document.getElementById('presetCards');
 
   container.innerHTML = PRESETS.map((preset, pi) => {
     const { totalIncomePct, netYield } = calcPresetNetYield(preset);
+    const { incomePct, growthPct } = calcPresetMix(preset);
     const grossYield = calcPresetGrossYield(preset);
 
     // Income portion of total asset provides the cash flow
-    // totalAsset * (incomeRatio/100) * netYield/100 / 12 = target
-    // totalAsset = target * 12 / (incomeRatio/100 * netYield/100)
+    // totalAsset * (totalIncomePct/100) * netYield/100 / 12 = target
+    // totalAsset = target * 12 / (totalIncomePct/100 * netYield/100)
     const incomeFraction = totalIncomePct / 100;
-    const totalNeeded = Math.round(target * 12 / (incomeFraction * netYield / 100));
+    const totalNeeded = calcRequiredAsset(target, totalIncomePct, netYield);
 
-    const growthAmount = Math.round(totalNeeded * preset.growthRatio / 100);
+    const growthAmount = Math.round(totalNeeded * growthPct / 100);
     const annualIncome = totalNeeded * incomeFraction * grossYield / 100;
 
     // Group items by account
@@ -430,7 +451,7 @@ function updatePresets() {
     ['ISA','pension','general'].forEach(acc => {
       if (accounts[acc].length === 0) return;
       const accTotal = accounts[acc].reduce((s, it) => s + it.amount, 0);
-      const accPct = Math.round(accTotal / totalNeeded * 100);
+      const accPct = totalNeeded > 0 ? Math.round(accTotal / totalNeeded * 100) : 0;
       accountsHtml += `<div class="pc-account-group">
         <div class="pc-account-name"><span style="color:${accountColors[acc]}">${accountNames[acc]}</span><span class="pct">${formatMoney(accTotal)} (${accPct}%)</span></div>
         <ul class="pc-items">${accounts[acc].map(it =>
@@ -458,12 +479,12 @@ function updatePresets() {
         <div class="pc-badge ${preset.badge}">${preset.badgeText}</div>
       </div>
       <div class="pc-ratio">
-        <div class="pc-ratio-income" style="flex:${preset.incomeRatio}"></div>
-        <div class="pc-ratio-growth" style="flex:${preset.growthRatio}"></div>
+        <div class="pc-ratio-income" style="flex:${incomePct}"></div>
+        <div class="pc-ratio-growth" style="flex:${growthPct}"></div>
       </div>
       <div class="pc-ratio-labels">
-        <span>인컴 ${preset.incomeRatio}%</span>
-        <span>성장 ${preset.growthRatio}%</span>
+        <span>인컴 ${incomePct}%</span>
+        <span>성장 ${growthPct}%</span>
       </div>
       <div class="pc-summary">
         <div class="pc-stat"><div class="pc-stat-val">${formatMoney(totalNeeded)}</div><div class="pc-stat-label">필요 총 자산</div></div>
@@ -491,11 +512,9 @@ function selectPreset(idx) {
 
 function applyPreset(idx) {
   const preset = PRESETS[idx];
-  const rawTarget = parseFloat(document.getElementById('targetMonthly').value);
-  const target = isNaN(rawTarget) ? 100 : rawTarget;
+  const target = parseInputNumber('targetMonthly', 100);
   const { totalIncomePct, netYield } = calcPresetNetYield(preset);
-  const incomeFraction = totalIncomePct / 100;
-  const totalNeeded = Math.round(target * 12 / (incomeFraction * netYield / 100));
+  const totalNeeded = calcRequiredAsset(target, totalIncomePct, netYield);
 
   data = { deposit:[], stock:[], bond:[], fund:[] };
   preset.items.forEach(it => {
@@ -517,7 +536,7 @@ function applyPreset(idx) {
   document.getElementById('taxForeign').value = 15.0;
 
   CATEGORIES.forEach(cat => renderTable(cat));
-  recalcAll();
+  recalcSummaryOnly();
   saveData();
 
   CATEGORIES.forEach(cat => {
@@ -666,7 +685,7 @@ function recalcAll() {
         const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
         totalMonthlyAfterTax += m * (1 - taxRate / 100);
       } else {
-        totalGrowthAsset += p;
+        totalGrowthAsset += pp;
       }
     });
     catTotals[cat] = catMonthly;
