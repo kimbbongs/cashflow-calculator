@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>월 현금흐름 계산기</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #4F46E5; --primary-light: #818CF8; --primary-bg: #EEF2FF;
+    --success: #059669; --success-bg: #ECFDF5;
+    --warning: #D97706; --warning-bg: #FFFBEB;
+    --danger: #DC2626;
+    --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB; --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF; --gray-500: #6B7280; --gray-600: #4B5563; --gray-700: #374151;
+    --gray-800: #1F2937; --gray-900: #111827;
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --radius: 12px;
+  }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 2rem 1.5rem; text-align: center; }
+  .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .header p { font-size: 0.95rem; opacity: 0.85; font-weight: 300; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+  /* ── Preset Section ── */
+  .preset-section { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; color: white; box-shadow: var(--shadow-lg); }
+  .preset-section h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .preset-section .desc { font-size: 0.82rem; opacity: 0.65; margin-bottom: 1.25rem; }
+  .preset-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .preset-top label { font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+  .preset-input-group { display: flex; align-items: center; gap: 0.5rem; }
+  .preset-input { width: 130px; padding: 0.5rem 0.7rem; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; font-size: 1rem; font-family: inherit; background: rgba(255,255,255,0.1); color: white; outline: none; font-weight: 600; }
+  .preset-input::placeholder { color: rgba(255,255,255,0.4); }
+  .preset-input:focus { border-color: var(--primary-light); background: rgba(255,255,255,0.15); }
+  .preset-unit { font-size: 0.85rem; opacity: 0.7; }
+
+  .preset-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 900px) { .preset-cards { grid-template-columns: 1fr; } }
+
+  .preset-card { background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; }
+  .preset-card:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
+  .preset-card.selected { border-color: var(--primary-light); background: rgba(79,70,229,0.2); box-shadow: 0 0 0 1px var(--primary-light); }
+  .pc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .pc-title { font-size: 1.05rem; font-weight: 700; }
+  .pc-badge { font-size: 0.6rem; padding: 0.15rem 0.45rem; border-radius: 20px; font-weight: 600; }
+  .badge-income { background: #065F46; color: #6EE7B7; }
+  .badge-balanced { background: #92400E; color: #FCD34D; }
+  .badge-growth { background: #1E3A5F; color: #93C5FD; }
+
+  .pc-ratio { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 0.7rem; gap: 2px; }
+  .pc-ratio-income { background: #10B981; }
+  .pc-ratio-growth { background: #3B82F6; }
+
+  .pc-ratio-labels { display: flex; justify-content: space-between; font-size: 0.68rem; opacity: 0.6; margin-bottom: 0.7rem; }
+
+  .pc-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.75rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .pc-stat { font-size: 0.75rem; }
+  .pc-stat-val { font-weight: 700; font-size: 0.95rem; }
+  .pc-stat-label { opacity: 0.55; font-size: 0.68rem; }
+
+  .pc-accounts { margin-bottom: 0.7rem; }
+  .pc-account-title { font-size: 0.72rem; font-weight: 600; opacity: 0.7; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .pc-account-group { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem 0.6rem; margin-bottom: 0.4rem; }
+  .pc-account-name { font-size: 0.72rem; font-weight: 600; color: #A5B4FC; margin-bottom: 0.2rem; display: flex; justify-content: space-between; }
+  .pc-account-name .pct { color: rgba(255,255,255,0.5); }
+  .pc-items { list-style: none; font-size: 0.7rem; }
+  .pc-items li { padding: 0.1rem 0; opacity: 0.75; display: flex; justify-content: space-between; }
+  .pc-items li span:last-child { font-weight: 600; opacity: 1; }
+
+  .pc-tax-warn { margin-top: 0.4rem; padding: 0.35rem 0.5rem; background: rgba(255,100,100,0.15); border-radius: 6px; font-size: 0.68rem; color: #FCA5A5; }
+  .pc-growth-note { margin-top: 0.4rem; padding: 0.35rem 0.5rem; background: rgba(59,130,246,0.15); border-radius: 6px; font-size: 0.68rem; color: #93C5FD; }
+
+  .preset-apply-btn { display: block; width: 100%; margin-top: 0.75rem; padding: 0.55rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: rgba(255,255,255,0.08); color: white; font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .preset-apply-btn:hover { background: rgba(255,255,255,0.18); }
+  .preset-card.selected .preset-apply-btn { background: var(--primary); border-color: var(--primary); }
+
+  .preset-footer { margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.72rem; opacity: 0.55; line-height: 1.8; }
+
+  /* ── Summary ── */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .summary-card { background: white; border-radius: var(--radius); padding: 1.15rem 1.35rem; box-shadow: var(--shadow); border-left: 4px solid var(--primary); transition: transform 0.2s, box-shadow 0.2s; }
+  .summary-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .summary-card.highlight { border-left-color: var(--success); background: var(--success-bg); }
+  .summary-card.rate { border-left-color: var(--warning); }
+  .summary-card.growth-card { border-left-color: #3B82F6; background: #EFF6FF; }
+  .summary-card .label { font-size: 0.75rem; color: var(--gray-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+  .summary-card .value { font-size: 1.45rem; font-weight: 700; color: var(--gray-900); }
+  .summary-card.highlight .value { color: var(--success); }
+  .summary-card.growth-card .value { color: #2563EB; }
+  .summary-card .sub { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
+
+  /* ── Charts ── */
+  .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  @media (max-width: 768px) { .chart-section { grid-template-columns: 1fr; } }
+  .chart-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
+  .chart-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem; }
+  .chart-wrapper { position: relative; height: 250px; }
+
+  /* ── Tax ── */
+  .tax-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .tax-section h3 { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem; }
+  .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .tax-item label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--gray-500); margin-bottom: 0.25rem; }
+  .tax-item input { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: var(--gray-50); color: var(--gray-800); outline: none; }
+  .tax-item input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); background: white; }
+
+  /* ── Asset Sections ── */
+  .asset-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow: hidden; animation: fadeIn 0.3s ease; }
+  .asset-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .asset-header:hover { background: var(--gray-50); }
+  .asset-header-left { display: flex; align-items: center; gap: 0.75rem; }
+  .asset-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+  .asset-icon.deposit { background: #DBEAFE; } .asset-icon.stock { background: #FCE7F3; }
+  .asset-icon.bond { background: #FEF3C7; } .asset-icon.fund { background: #D1FAE5; }
+  .asset-title { font-size: 1rem; font-weight: 600; }
+  .asset-subtitle { font-size: 0.75rem; color: var(--gray-400); }
+  .asset-header-right { display: flex; align-items: center; gap: 1rem; }
+  .asset-monthly { text-align: right; }
+  .asset-monthly .amount { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+  .asset-monthly .per-month { font-size: 0.68rem; color: var(--gray-400); }
+  .toggle-arrow { font-size: 0.8rem; color: var(--gray-400); transition: transform 0.3s; }
+  .toggle-arrow.open { transform: rotate(180deg); }
+  .asset-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .asset-body.open { max-height: 3000px; }
+  .asset-body-inner { padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--gray-100); padding-top: 1rem; }
+
+  .items-table { width: 100%; border-collapse: collapse; }
+  .items-table th { font-size: 0.7rem; font-weight: 600; color: var(--gray-500); text-align: left; padding: 0.45rem 0.6rem; border-bottom: 2px solid var(--gray-100); text-transform: uppercase; letter-spacing: 0.04em; }
+  .items-table th:last-child { text-align: center; width: 45px; }
+  .items-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--gray-50); vertical-align: middle; }
+  .items-table tr:last-child td { border-bottom: none; }
+  .items-table input { width: 100%; padding: 0.45rem 0.6rem; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 0.85rem; font-family: inherit; color: var(--gray-800); background: var(--gray-50); outline: none; transition: all 0.2s; }
+  .items-table input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); background: white; }
+  .items-table input::placeholder { color: var(--gray-300); }
+  .monthly-cell { font-weight: 600; color: var(--primary); font-size: 0.85rem; white-space: nowrap; text-align: right; min-width: 90px; }
+  .account-cell { font-size: 0.7rem; color: var(--gray-400); white-space: nowrap; }
+  .account-tag { display: inline-block; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+  .tag-isa { background: #DBEAFE; color: #1D4ED8; }
+  .tag-pension { background: #FEF3C7; color: #92400E; }
+  .tag-general { background: var(--gray-100); color: var(--gray-600); }
+  .tag-growth { background: #DBEAFE; color: #1E40AF; font-size: 0.6rem; margin-left: 2px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: inherit; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-add { background: var(--primary-bg); color: var(--primary); margin-top: 0.6rem; }
+  .btn-add:hover { background: #DDD6FE; }
+  .btn-delete { background: none; color: var(--gray-300); padding: 0.3rem; border-radius: 6px; font-size: 1rem; line-height: 1; }
+  .btn-delete:hover { background: #FEE2E2; color: var(--danger); }
+
+  .footer { text-align: center; padding: 2rem 1rem; color: var(--gray-400); font-size: 0.78rem; }
+  .empty-row td { text-align: center; color: var(--gray-300); font-size: 0.82rem; padding: 1.25rem !important; }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 1.3rem; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .summary-card .value { font-size: 1.2rem; }
+    .container { padding: 1rem; }
+    .items-table { font-size: 0.8rem; }
+    .asset-header { padding: 0.8rem 1rem; }
+    .asset-body-inner { padding: 0 1rem 1rem; }
+    .items-table th, .items-table td { padding: 0.35rem 0.35rem; }
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>내 자산 월 현금흐름 계산기</h1>
+  <p>금융자산으로 매달 얼마의 현금흐름을 만들 수 있을까?</p>
+</div>
+<div class="container">
+
+  <!-- ── Presets ── -->
+  <div class="preset-section">
+    <h2>포트폴리오 추천 (계좌 배분 + 성장 전략 포함)</h2>
+    <div class="desc">목표 월 현금흐름을 입력하면, 절세 계좌 활용 + 인컴/성장 비중을 고려한 포트폴리오를 구성합니다.</div>
+    <div class="preset-top">
+      <label>목표 월 현금흐름 (세후)</label>
+      <div class="preset-input-group">
+        <input type="number" class="preset-input" id="targetMonthly" value="100" placeholder="100" oninput="updatePresets()">
+        <span class="preset-unit">만원 / 월</span>
+      </div>
+    </div>
+    <div class="preset-cards" id="presetCards"></div>
+    <div class="preset-footer">
+      <strong>절세 계좌 기준 (2026년):</strong><br>
+      ISA (중개형): 배당/이자 비과세 한도 500만원 (서민형 1,000만원), 초과분 9.9% 분리과세<br>
+      연금저축+IRP: 연 납입 1,800만원 한도, 세액공제 최대 900만원, 수령 시 연금소득세 3.3~5.5%<br>
+      일반계좌: 이자/배당 15.4% 원천징수, 해외주식 배당 15% 현지 원천징수, 양도세 22% (250만원 공제)<br>
+      금융소득종합과세: 연 2,000만원 초과 시 6.6~49.5% 종합과세<br>
+      * 성장자산은 배당이 아닌 시세차익 목적이므로 현금흐름에 미포함, 장기 자산증식 목적
+    </div>
+  </div>
+
+  <!-- ── Summary ── -->
+  <div class="summary-grid">
+    <div class="summary-card"><div class="label">총 투자 자산</div><div class="value" id="totalAsset">0원</div></div>
+    <div class="summary-card highlight"><div class="label">월 현금흐름 (세전)</div><div class="value" id="monthlyCashflow">0원</div><div class="sub" id="yearlyCashflow">연 0원</div></div>
+    <div class="summary-card highlight"><div class="label">월 현금흐름 (세후)</div><div class="value" id="monthlyAfterTax">0원</div><div class="sub" id="yearlyAfterTax">연 0원</div></div>
+    <div class="summary-card rate"><div class="label">인컴 수익률</div><div class="value" id="avgRate">0.00%</div><div class="sub" id="avgRateAfterTax">세후 0.00%</div></div>
+    <div class="summary-card growth-card"><div class="label">성장자산 비중</div><div class="value" id="growthRatio">0%</div><div class="sub" id="growthAmount">0원</div></div>
+  </div>
+
+  <!-- ── Charts ── -->
+  <div class="chart-section">
+    <div class="chart-card"><h3>자산 유형별 비중</h3><div class="chart-wrapper"><canvas id="pieChart"></canvas></div></div>
+    <div class="chart-card"><h3>유형별 월 현금흐름</h3><div class="chart-wrapper"><canvas id="barChart"></canvas></div></div>
+  </div>
+
+  <!-- ── Tax ── -->
+  <div class="tax-section">
+    <h3>세금 설정</h3>
+    <div class="tax-grid">
+      <div class="tax-item"><label>이자소득세율 (%)</label><input type="number" id="taxInterest" value="15.4" step="0.1" oninput="recalcAll()"></div>
+      <div class="tax-item"><label>국내 배당소득세율 (%)</label><input type="number" id="taxDividend" value="15.4" step="0.1" oninput="recalcAll()"></div>
+      <div class="tax-item"><label>해외 배당세율 (%)</label><input type="number" id="taxForeign" value="15.0" step="0.1" oninput="recalcAll()"></div>
+    </div>
+  </div>
+
+  <!-- ── Asset Sections ── -->
+  <div class="asset-section" id="section-deposit">
+    <div class="asset-header" onclick="toggleSection('deposit')">
+      <div class="asset-header-left"><div class="asset-icon deposit">🏦</div><div><div class="asset-title">예금 / 적금</div><div class="asset-subtitle">은행 예적금, CMA, MMF 등</div></div></div>
+      <div class="asset-header-right"><div class="asset-monthly"><div class="amount" id="total-deposit">0원</div><div class="per-month">월 수익</div></div><div class="toggle-arrow" id="arrow-deposit">▼</div></div>
+    </div>
+    <div class="asset-body" id="body-deposit"><div class="asset-body-inner">
+      <table class="items-table"><thead><tr><th>상품명</th><th>원금 (만원)</th><th>연이자 (%)</th><th>계좌</th><th>월 수익</th><th></th></tr></thead><tbody id="tbody-deposit"></tbody></table>
+      <button class="btn btn-add" onclick="addRow('deposit')">+ 항목 추가</button>
+    </div></div>
+  </div>
+
+  <div class="asset-section" id="section-stock">
+    <div class="asset-header" onclick="toggleSection('stock')">
+      <div class="asset-header-left"><div class="asset-icon stock">📈</div><div><div class="asset-title">주식 / ETF (인컴 + 성장)</div><div class="asset-subtitle">배당주, 배당 ETF, 성장 ETF 등</div></div></div>
+      <div class="asset-header-right"><div class="asset-monthly"><div class="amount" id="total-stock">0원</div><div class="per-month">월 수익</div></div><div class="toggle-arrow" id="arrow-stock">▼</div></div>
+    </div>
+    <div class="asset-body" id="body-stock"><div class="asset-body-inner">
+      <table class="items-table"><thead><tr><th>종목명</th><th>투자금 (만원)</th><th>배당률 (%)</th><th>계좌</th><th>월 배당</th><th></th></tr></thead><tbody id="tbody-stock"></tbody></table>
+      <button class="btn btn-add" onclick="addRow('stock')">+ 항목 추가</button>
+    </div></div>
+  </div>
+
+  <div class="asset-section" id="section-bond">
+    <div class="asset-header" onclick="toggleSection('bond')">
+      <div class="asset-header-left"><div class="asset-icon bond">📜</div><div><div class="asset-title">채권</div><div class="asset-subtitle">국채, 회사채, 채권 ETF 등</div></div></div>
+      <div class="asset-header-right"><div class="asset-monthly"><div class="amount" id="total-bond">0원</div><div class="per-month">월 수익</div></div><div class="toggle-arrow" id="arrow-bond">▼</div></div>
+    </div>
+    <div class="asset-body" id="body-bond"><div class="asset-body-inner">
+      <table class="items-table"><thead><tr><th>채권명</th><th>투자금 (만원)</th><th>연이자 (%)</th><th>계좌</th><th>월 이자</th><th></th></tr></thead><tbody id="tbody-bond"></tbody></table>
+      <button class="btn btn-add" onclick="addRow('bond')">+ 항목 추가</button>
+    </div></div>
+  </div>
+
+  <div class="asset-section" id="section-fund">
+    <div class="asset-header" onclick="toggleSection('fund')">
+      <div class="asset-header-left"><div class="asset-icon fund">💰</div><div><div class="asset-title">펀드 / 리츠</div><div class="asset-subtitle">펀드 분배금, 리츠 배당 등</div></div></div>
+      <div class="asset-header-right"><div class="asset-monthly"><div class="amount" id="total-fund">0원</div><div class="per-month">월 수익</div></div><div class="toggle-arrow" id="arrow-fund">▼</div></div>
+    </div>
+    <div class="asset-body" id="body-fund"><div class="asset-body-inner">
+      <table class="items-table"><thead><tr><th>펀드명</th><th>투자금 (만원)</th><th>연분배 (%)</th><th>계좌</th><th>월 분배금</th><th></th></tr></thead><tbody id="tbody-fund"></tbody></table>
+      <button class="btn btn-add" onclick="addRow('fund')">+ 항목 추가</button>
+    </div></div>
+  </div>
+
+  <div class="footer">내 자산 월 현금흐름 계산기 &middot; 데이터는 브라우저에 저장됩니다</div>
+</div>
+
+<script>
+const CATEGORIES = ['deposit','stock','bond','fund'];
+const COLORS = { deposit:'#3B82F6', stock:'#EC4899', bond:'#F59E0B', fund:'#10B981' };
+const LABELS = { deposit:'예금/적금', stock:'주식/ETF', bond:'채권', fund:'펀드/리츠' };
+
+let data = { deposit:[], stock:[], bond:[], fund:[] };
+let pieChart, barChart;
+
+// ── Preset Definitions ──
+// account: 'ISA' | 'pension' | 'general'
+// isGrowth: true = 성장자산 (배당 아닌 시세차익 목적, rate=0 for cashflow calc)
+const PRESETS = [
+  {
+    name: '인컴 중심형',
+    badge: 'badge-income', badgeText: '안정 인컴',
+    incomeRatio: 80, growthRatio: 20,
+    desc: '현금흐름 극대화 + 20% 성장 재투자',
+    items: [
+      // ISA 계좌 (비과세 한도 활용)
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:10, account:'ISA' },
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:8, account:'ISA' },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:7, account:'ISA' },
+      // 연금저축+IRP (세액공제 + 과세이연)
+      { cat:'stock', name:'TIGER 미국배당다우존스 (연금)', rate:3.65, pct:5, account:'pension' },
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:10, account:'pension', isGrowth:true, expectedGrowth:10 },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:5, account:'pension' },
+      // 일반계좌 - 국내 배당
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:10, account:'general' },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:8, account:'general' },
+      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:7, account:'general' },
+      // 일반계좌 - 해외 직접투자
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
+      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, pct:10, account:'general', isForeign:true },
+      // 일반계좌 - 성장
+      { cat:'stock', name:'S&P500 ETF (성장)', rate:0, pct:5, account:'general', isGrowth:true, expectedGrowth:10 },
+      // 안전자산
+      { cat:'deposit', name:'CMA/MMF', rate:3.2, pct:5, account:'general' },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:5, account:'general' },
+    ]
+  },
+  {
+    name: '균형 성장형',
+    badge: 'badge-balanced', badgeText: '인컴+성장',
+    incomeRatio: 55, growthRatio: 45,
+    desc: '현금흐름 확보 + 45% 장기 자산 성장',
+    items: [
+      // ISA
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:8, account:'ISA' },
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:10, account:'ISA', isGrowth:true, expectedGrowth:10 },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:7, account:'ISA' },
+      // 연금저축+IRP
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, pct:10, account:'pension', isGrowth:true, expectedGrowth:12 },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:5, account:'pension' },
+      // 일반 - 해외직접
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
+      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, pct:5, account:'general', isForeign:true },
+      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, pct:10, account:'general', isGrowth:true, isForeign:true, expectedGrowth:10 },
+      // 일반 - 국내
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:5, account:'general' },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:5, account:'general' },
+      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:5, account:'general' },
+      // 안전자산
+      { cat:'deposit', name:'CMA/MMF', rate:3.2, pct:5, account:'general' },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:5, account:'general' },
+    ]
+  },
+  {
+    name: '성장 중심형',
+    badge: 'badge-growth', badgeText: '장기 성장',
+    incomeRatio: 35, growthRatio: 65,
+    desc: '최소 현금흐름 + 65% 공격적 자산 증식',
+    items: [
+      // ISA
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:12, account:'ISA', isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:5, account:'ISA' },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:5, account:'ISA' },
+      // 연금저축+IRP
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:12 },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:3, account:'pension' },
+      // 일반 - 해외직접 성장
+      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, pct:13, account:'general', isGrowth:true, isForeign:true, expectedGrowth:10 },
+      { cat:'stock', name:'QQQ (미국직접, 성장)', rate:0, pct:10, account:'general', isGrowth:true, isForeign:true, expectedGrowth:12 },
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
+      // 일반 - 국내 인컴
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:5, account:'general' },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:4, account:'general' },
+      // 안전자산
+      { cat:'deposit', name:'CMA/MMF (비상금)', rate:3.2, pct:5, account:'general' },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:3, account:'general' },
+    ]
+  }
+];
+
+function formatMoney(man) {
+  if (man >= 10000) return (man / 10000).toFixed(1).replace(/\.0$/,'') + '억원';
+  if (man >= 1000) return (man / 1000).toFixed(1).replace(/\.0$/,'') + '천만원';
+  return Math.round(man).toLocaleString() + '만원';
+}
+
+function calcPresetNetYield(preset) {
+  let totalIncomePct = 0, weightedRate = 0;
+  preset.items.forEach(it => {
+    if (!it.isGrowth && it.rate > 0) {
+      totalIncomePct += it.pct;
+      let taxRate = 15.4;
+      if (it.isForeign) taxRate = 15.0;
+      if (it.account === 'ISA') taxRate = 0; // 비과세 한도 내 가정
+      if (it.account === 'pension') taxRate = 3.3; // 연금소득세
+      const netRate = it.rate * (1 - taxRate / 100);
+      weightedRate += it.pct * netRate;
+    }
+  });
+  return { totalIncomePct, netYield: totalIncomePct > 0 ? weightedRate / totalIncomePct : 0 };
+}
+
+function calcPresetGrossYield(preset) {
+  let totalIncomePct = 0, weightedRate = 0;
+  preset.items.forEach(it => {
+    if (!it.isGrowth && it.rate > 0) {
+      totalIncomePct += it.pct;
+      weightedRate += it.pct * it.rate;
+    }
+  });
+  return totalIncomePct > 0 ? weightedRate / totalIncomePct : 0;
+}
+
+function updatePresets() {
+  const target = parseFloat(document.getElementById('targetMonthly').value) || 100;
+  const container = document.getElementById('presetCards');
+
+  container.innerHTML = PRESETS.map((preset, pi) => {
+    const { totalIncomePct, netYield } = calcPresetNetYield(preset);
+    const grossYield = calcPresetGrossYield(preset);
+
+    // Income portion of total asset provides the cash flow
+    // totalAsset * (incomeRatio/100) * netYield/100 / 12 = target
+    // totalAsset = target * 12 / (incomeRatio/100 * netYield/100)
+    const incomeFraction = totalIncomePct / 100;
+    const totalNeeded = Math.round(target * 12 / (incomeFraction * netYield / 100));
+
+    const growthAmount = Math.round(totalNeeded * preset.growthRatio / 100);
+    const annualIncome = totalNeeded * incomeFraction * grossYield / 100;
+
+    // Group items by account
+    const accounts = { ISA: [], pension: [], general: [] };
+    preset.items.forEach(it => {
+      const amt = Math.round(totalNeeded * it.pct / 100);
+      accounts[it.account].push({ ...it, amount: amt });
+    });
+
+    const accountNames = { ISA: 'ISA (중개형)', pension: '연금저축 + IRP', general: '일반 계좌' };
+    const accountColors = { ISA: '#60A5FA', pension: '#FBBF24', general: '#9CA3AF' };
+
+    let accountsHtml = '';
+    ['ISA','pension','general'].forEach(acc => {
+      if (accounts[acc].length === 0) return;
+      const accTotal = accounts[acc].reduce((s, it) => s + it.amount, 0);
+      const accPct = Math.round(accTotal / totalNeeded * 100);
+      accountsHtml += `<div class="pc-account-group">
+        <div class="pc-account-name"><span style="color:${accountColors[acc]}">${accountNames[acc]}</span><span class="pct">${formatMoney(accTotal)} (${accPct}%)</span></div>
+        <ul class="pc-items">${accounts[acc].map(it =>
+          `<li><span>${it.name}${it.isGrowth ? ' <span class="account-tag tag-growth">성장</span>' : ` (${it.rate}%)`}</span><span>${formatMoney(it.amount)}</span></li>`
+        ).join('')}</ul>
+      </div>`;
+    });
+
+    let taxWarn = '';
+    if (annualIncome > 2000) {
+      taxWarn = `<div class="pc-tax-warn">연 금융소득 ~${formatMoney(Math.round(annualIncome))} > 2,000만원 → 종합과세 대상 가능</div>`;
+    }
+
+    // Expected growth
+    let totalExpGrowth = 0;
+    preset.items.forEach(it => {
+      if (it.isGrowth && it.expectedGrowth) {
+        totalExpGrowth += (totalNeeded * it.pct / 100) * it.expectedGrowth / 100;
+      }
+    });
+
+    return `<div class="preset-card" id="preset-${pi}" onclick="selectPreset(${pi})">
+      <div class="pc-header">
+        <div class="pc-title">${preset.name}</div>
+        <div class="pc-badge ${preset.badge}">${preset.badgeText}</div>
+      </div>
+      <div class="pc-ratio">
+        <div class="pc-ratio-income" style="flex:${preset.incomeRatio}"></div>
+        <div class="pc-ratio-growth" style="flex:${preset.growthRatio}"></div>
+      </div>
+      <div class="pc-ratio-labels">
+        <span>인컴 ${preset.incomeRatio}%</span>
+        <span>성장 ${preset.growthRatio}%</span>
+      </div>
+      <div class="pc-summary">
+        <div class="pc-stat"><div class="pc-stat-val">${formatMoney(totalNeeded)}</div><div class="pc-stat-label">필요 총 자산</div></div>
+        <div class="pc-stat"><div class="pc-stat-val">${netYield.toFixed(1)}%</div><div class="pc-stat-label">세후 인컴 수익률</div></div>
+        <div class="pc-stat"><div class="pc-stat-val">${formatMoney(growthAmount)}</div><div class="pc-stat-label">성장자산 규모</div></div>
+        <div class="pc-stat"><div class="pc-stat-val">월 ${target}만원</div><div class="pc-stat-label">세후 현금흐름</div></div>
+      </div>
+      <div class="pc-accounts">
+        <div class="pc-account-title">계좌별 배분</div>
+        ${accountsHtml}
+      </div>
+      ${taxWarn}
+      ${totalExpGrowth > 0 ? `<div class="pc-growth-note">성장자산 연 예상 수익: +${formatMoney(Math.round(totalExpGrowth))} (재투자 시 복리 효과)</div>` : ''}
+      <button class="preset-apply-btn" onclick="event.stopPropagation();applyPreset(${pi})">이 포트폴리오 적용하기</button>
+    </div>`;
+  }).join('');
+}
+
+let selectedPreset = -1;
+function selectPreset(idx) {
+  document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('preset-' + idx).classList.add('selected');
+  selectedPreset = idx;
+}
+
+function applyPreset(idx) {
+  const preset = PRESETS[idx];
+  const target = parseFloat(document.getElementById('targetMonthly').value) || 100;
+  const { totalIncomePct, netYield } = calcPresetNetYield(preset);
+  const incomeFraction = totalIncomePct / 100;
+  const totalNeeded = Math.round(target * 12 / (incomeFraction * netYield / 100));
+
+  data = { deposit:[], stock:[], bond:[], fund:[] };
+  preset.items.forEach(it => {
+    const amount = Math.round(totalNeeded * it.pct / 100);
+    data[it.cat].push({
+      id: Date.now() + Math.random(),
+      name: it.name,
+      principal: amount,
+      rate: it.rate,
+      account: it.account || 'general',
+      isGrowth: it.isGrowth || false,
+      isForeign: it.isForeign || false,
+      expectedGrowth: it.expectedGrowth || 0
+    });
+  });
+
+  document.getElementById('taxInterest').value = 15.4;
+  document.getElementById('taxDividend').value = 15.4;
+  document.getElementById('taxForeign').value = 15.0;
+
+  CATEGORIES.forEach(cat => renderTable(cat));
+  recalcAll();
+  saveData();
+
+  CATEGORIES.forEach(cat => {
+    const body = document.getElementById('body-' + cat);
+    const arrow = document.getElementById('arrow-' + cat);
+    if (data[cat].length > 0 && !body.classList.contains('open')) { body.classList.add('open'); arrow.classList.add('open'); }
+    else if (data[cat].length === 0 && body.classList.contains('open')) { body.classList.remove('open'); arrow.classList.remove('open'); }
+  });
+
+  document.getElementById('totalAsset').scrollIntoView({ behavior:'smooth', block:'center' });
+  selectPreset(idx);
+}
+
+// ── Core Logic ──
+
+function toggleSection(cat) {
+  document.getElementById('body-' + cat).classList.toggle('open');
+  document.getElementById('arrow-' + cat).classList.toggle('open');
+}
+
+function getMonthly(principal, rate) { return (principal * (rate / 100)) / 12; }
+
+function getItemTaxRate(item) {
+  if (item.account === 'ISA') return 0; // 비과세 한도 내 가정
+  if (item.account === 'pension') return 3.3; // 연금소득세
+  if (item.isForeign) return parseFloat(document.getElementById('taxForeign').value) || 15;
+  // general account
+  return parseFloat(document.getElementById('taxDividend').value) || 15.4;
+}
+
+function getItemTaxRateForBond(item) {
+  if (item.account === 'ISA') return 0;
+  if (item.account === 'pension') return 3.3;
+  return parseFloat(document.getElementById('taxInterest').value) || 15.4;
+}
+
+function addRow(cat) {
+  data[cat].push({ id: Date.now()+Math.random(), name:'', principal:'', rate:'', account:'general', isGrowth:false, isForeign:false, expectedGrowth:0 });
+  renderTable(cat);
+  saveData();
+}
+
+function deleteRow(cat, idx) { data[cat].splice(idx,1); renderTable(cat); recalcAll(); saveData(); }
+
+function escapeHtml(str) { const d=document.createElement('div'); d.textContent=str||''; return d.innerHTML.replace(/"/g,'&quot;'); }
+
+function renderTable(cat) {
+  const tbody = document.getElementById('tbody-' + cat);
+  if (data[cat].length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">항목을 추가해주세요</td></tr>'; return; }
+  tbody.innerHTML = data[cat].map((item, idx) => {
+    const p = parseFloat(item.principal) || 0;
+    const r = parseFloat(item.rate) || 0;
+    const monthly = getMonthly(p, r);
+    const accTag = item.account === 'ISA' ? '<span class="account-tag tag-isa">ISA</span>' :
+                   item.account === 'pension' ? '<span class="account-tag tag-pension">연금</span>' :
+                   '<span class="account-tag tag-general">일반</span>';
+    const growthTag = item.isGrowth ? ' <span class="account-tag tag-growth">성장</span>' : '';
+    return `<tr>
+      <td><input type="text" placeholder="이름" value="${escapeHtml(item.name)}" oninput="updateItem('${cat}',${idx},'name',this.value)"></td>
+      <td><input type="number" placeholder="0" value="${item.principal}" oninput="updateItem('${cat}',${idx},'principal',this.value)"></td>
+      <td><input type="number" placeholder="0.0" step="0.1" value="${item.rate}" oninput="updateItem('${cat}',${idx},'rate',this.value)"></td>
+      <td class="account-cell">${accTag}${growthTag}</td>
+      <td class="monthly-cell">${item.isGrowth ? '<span style="color:var(--gray-300)">성장</span>' : (monthly > 0 ? formatMoney(monthly) : '-')}</td>
+      <td><button class="btn btn-delete" onclick="deleteRow('${cat}',${idx})">&times;</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function updateItem(cat, idx, field, value) { data[cat][idx][field] = value; recalcAll(); saveData(); }
+
+function recalcAll() {
+  let totalAsset = 0, totalMonthly = 0, totalMonthlyAfterTax = 0;
+  let totalGrowthAsset = 0;
+  const catTotals = {}, catAssets = {};
+
+  CATEGORIES.forEach(cat => {
+    let catMonthly = 0, catAsset = 0;
+    data[cat].forEach(item => {
+      const p = parseFloat(item.principal) || 0;
+      const r = parseFloat(item.rate) || 0;
+      const m = getMonthly(p, r);
+      catAsset += p;
+      if (!item.isGrowth) {
+        catMonthly += m;
+        const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
+        totalMonthlyAfterTax += m * (1 - taxRate / 100);
+      } else {
+        totalGrowthAsset += p;
+      }
+    });
+    catTotals[cat] = catMonthly;
+    catAssets[cat] = catAsset;
+    totalAsset += catAsset;
+    totalMonthly += catMonthly;
+    document.getElementById('total-' + cat).textContent = catMonthly > 0 ? formatMoney(catMonthly) : '0원';
+    renderTable(cat);
+  });
+
+  document.getElementById('totalAsset').textContent = totalAsset > 0 ? formatMoney(totalAsset) : '0원';
+  document.getElementById('monthlyCashflow').textContent = totalMonthly > 0 ? formatMoney(totalMonthly) : '0원';
+  document.getElementById('yearlyCashflow').textContent = '연 ' + (totalMonthly > 0 ? formatMoney(totalMonthly * 12) : '0원');
+  document.getElementById('monthlyAfterTax').textContent = totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax) : '0원';
+  document.getElementById('yearlyAfterTax').textContent = '연 ' + (totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax * 12) : '0원');
+
+  const incomeAsset = totalAsset - totalGrowthAsset;
+  const avgRate = incomeAsset > 0 ? ((totalMonthly * 12) / incomeAsset * 100) : 0;
+  const avgRateAfter = incomeAsset > 0 ? ((totalMonthlyAfterTax * 12) / incomeAsset * 100) : 0;
+  document.getElementById('avgRate').textContent = avgRate.toFixed(2) + '%';
+  document.getElementById('avgRateAfterTax').textContent = '세후 ' + avgRateAfter.toFixed(2) + '%';
+
+  const growthPct = totalAsset > 0 ? (totalGrowthAsset / totalAsset * 100) : 0;
+  document.getElementById('growthRatio').textContent = growthPct.toFixed(0) + '%';
+  document.getElementById('growthAmount').textContent = totalGrowthAsset > 0 ? formatMoney(totalGrowthAsset) : '0원';
+
+  updateCharts(catAssets, catTotals);
+}
+
+function updateCharts(catAssets, catTotals) {
+  if (pieChart) { pieChart.data.datasets[0].data = CATEGORIES.map(c => catAssets[c]||0); pieChart.update(); }
+  if (barChart) { barChart.data.datasets[0].data = CATEGORIES.map(c => catTotals[c]||0); barChart.update(); }
+}
+
+function initCharts() {
+  const labels = CATEGORIES.map(c => LABELS[c]);
+  const colors = CATEGORIES.map(c => COLORS[c]);
+  pieChart = new Chart(document.getElementById('pieChart'), {
+    type:'doughnut', data:{ labels, datasets:[{ data:[0,0,0,0], backgroundColor:colors, borderWidth:0, hoverOffset:8 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'65%',
+      plugins:{ legend:{ position:'bottom', labels:{ padding:14, usePointStyle:true, pointStyleWidth:10, font:{family:'Noto Sans KR',size:12} } },
+      tooltip:{ callbacks:{ label: ctx => ' '+ctx.label+': '+formatMoney(ctx.parsed) } } } }
+  });
+  barChart = new Chart(document.getElementById('barChart'), {
+    type:'bar', data:{ labels, datasets:[{ label:'월 수익 (만원)', data:[0,0,0,0], backgroundColor:colors.map(c=>c+'CC'), borderColor:colors, borderWidth:1, borderRadius:6, barPercentage:0.6 }] },
+    options:{ responsive:true, maintainAspectRatio:false,
+      scales:{ y:{ beginAtZero:true, ticks:{ callback:v=>v+'만', font:{family:'Noto Sans KR',size:11} }, grid:{color:'#F3F4F6'} }, x:{ ticks:{font:{family:'Noto Sans KR',size:12}}, grid:{display:false} } },
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:ctx=>' 월 '+formatMoney(ctx.parsed.y) } } } }
+  });
+}
+
+function saveData() { try { localStorage.setItem('cashflow-v2', JSON.stringify(data)); } catch(e){} }
+function loadData() { try { const s=localStorage.getItem('cashflow-v2'); if(s) data=JSON.parse(s); } catch(e){} }
+
+// Init
+loadData();
+initCharts();
+CATEGORIES.forEach(cat => renderTable(cat));
+recalcAll();
+updatePresets();
+let opened = false;
+CATEGORIES.forEach(cat => { if (!opened && data[cat].length > 0) { toggleSection(cat); opened = true; } });
+if (!opened) toggleSection('deposit');
+</script>
+</body>
+</html>
