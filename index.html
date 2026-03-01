@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>현금흐름 포트폴리오 설계기</title>
+<title>월 현금흐름 계산기</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --primary: #0F766E; --primary-light: #14B8A6; --primary-bg: #CCFBF1;
+    --primary: #4F46E5; --primary-light: #818CF8; --primary-bg: #EEF2FF;
     --success: #059669; --success-bg: #ECFDF5;
     --warning: #D97706; --warning-bg: #FFFBEB;
     --danger: #DC2626;
@@ -21,21 +21,21 @@
     --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
     --radius: 12px;
   }
-  body { font-family: 'IBM Plex Sans KR', -apple-system, sans-serif; background: radial-gradient(circle at 15% 0%, #E6FFFB 0%, #F9FAFB 32%, #F9FAFB 100%); color: var(--gray-800); line-height: 1.6; min-height: 100vh; }
-  .header { background: linear-gradient(120deg, #0F172A 0%, #134E4A 52%, #0F766E 100%); color: white; padding: 2rem 1.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 2rem 1.5rem; text-align: center; }
   .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
   .header p { font-size: 0.95rem; opacity: 0.85; font-weight: 300; }
   .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
 
   /* Preset */
-  .preset-section { background: linear-gradient(130deg, #0F172A 0%, #134E4A 58%, #115E59 100%); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.25rem; color: white; box-shadow: var(--shadow-lg); }
+  .preset-section { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; color: white; box-shadow: var(--shadow-lg); }
   .preset-section h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; }
   .preset-section .desc { font-size: 0.82rem; opacity: 0.65; margin-bottom: 1.25rem; }
   .preset-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .preset-top label { font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
   .preset-input-group { display: flex; align-items: center; gap: 0.5rem; }
   .preset-toggle-wrap { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; padding: 0.42rem 0.65rem; }
-  .preset-toggle-wrap input { width: 16px; height: 16px; accent-color: #14B8A6; }
+  .preset-toggle-wrap input { width: 16px; height: 16px; accent-color: var(--primary-light); }
   .preset-toggle-wrap span { font-size: 0.8rem; }
   .preset-input { width: 130px; padding: 0.5rem 0.7rem; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; font-size: 1rem; font-family: inherit; background: rgba(255,255,255,0.1); color: white; outline: none; font-weight: 600; }
   .preset-input::placeholder { color: rgba(255,255,255,0.4); }
@@ -45,7 +45,7 @@
   @media (max-width: 900px) { .preset-cards { grid-template-columns: 1fr; } }
   .preset-card { background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; }
   .preset-card:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
-  .preset-card.selected { border-color: #5EEAD4; background: rgba(15,118,110,0.22); box-shadow: 0 0 0 1px #5EEAD4; }
+  .preset-card.selected { border-color: var(--primary-light); background: rgba(79,70,229,0.2); box-shadow: 0 0 0 1px var(--primary-light); }
   .pc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
   .pc-title { font-size: 1.05rem; font-weight: 700; }
   .pc-desc { font-size: 0.71rem; opacity: 0.74; margin-bottom: 0.55rem; min-height: 1.9em; line-height: 1.35; }
@@ -63,7 +63,7 @@
   .pc-accounts { margin-bottom: 0.7rem; }
   .pc-account-title { font-size: 0.72rem; font-weight: 600; opacity: 0.7; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.05em; }
   .pc-account-group { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem 0.6rem; margin-bottom: 0.4rem; }
-  .pc-account-name { font-size: 0.72rem; font-weight: 600; color: #99F6E4; margin-bottom: 0.2rem; display: flex; justify-content: space-between; }
+  .pc-account-name { font-size: 0.72rem; font-weight: 600; color: #A5B4FC; margin-bottom: 0.2rem; display: flex; justify-content: space-between; }
   .pc-account-name .pct { color: rgba(255,255,255,0.5); }
   .pc-items { list-style: none; font-size: 0.7rem; }
   .pc-items li { padding: 0.1rem 0; opacity: 0.75; display: flex; justify-content: space-between; }
@@ -73,21 +73,21 @@
   .pc-warn-yellow { background: rgba(251,191,36,0.15); color: #FCD34D; }
   .pc-warn-blue { background: rgba(59,130,246,0.15); color: #93C5FD; }
   .pc-warn-green { background: rgba(16,185,129,0.15); color: #6EE7B7; }
-  .pc-warn-info { background: rgba(20,184,166,0.16); color: #99F6E4; }
+  .pc-warn-info { background: rgba(99,102,241,0.12); color: #A5B4FC; }
   .preset-apply-btn { display: block; width: 100%; margin-top: 0.75rem; padding: 0.55rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: rgba(255,255,255,0.08); color: white; font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .preset-apply-btn:hover { background: rgba(255,255,255,0.18); }
   .preset-card.selected .preset-apply-btn { background: var(--primary); border-color: var(--primary); }
   .preset-footer { margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.72rem; opacity: 0.55; line-height: 1.8; }
-  .data-status { margin-top: 0.55rem; font-size: 0.68rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.25); color: #D1FAE5; opacity: 0.95; }
+  .data-status { margin-top: 0.55rem; font-size: 0.68rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.25); color: #C7D2FE; opacity: 0.95; }
 
   /* Portfolio blueprint */
-  .blueprint-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem 1.3rem; margin-bottom: 2rem; border: 1px solid #D1FAE5; }
+  .blueprint-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem 1.3rem; margin-bottom: 2rem; border: 1px solid #DDD6FE; }
   .blueprint-title { font-size: 1.02rem; font-weight: 700; color: #0F172A; margin-bottom: 0.2rem; }
   .blueprint-desc { font-size: 0.78rem; color: var(--gray-500); margin-bottom: 0.85rem; }
   .blueprint-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-bottom: 0.8rem; }
-  .bp-chip { background: #F0FDFA; border: 1px solid #99F6E4; border-radius: 10px; padding: 0.55rem 0.75rem; }
-  .bp-chip .k { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.04em; color: #0F766E; }
-  .bp-chip .v { font-size: 0.9rem; font-weight: 700; color: #134E4A; margin-top: 0.08rem; }
+  .bp-chip { background: var(--primary-bg); border: 1px solid #C7D2FE; border-radius: 10px; padding: 0.55rem 0.75rem; }
+  .bp-chip .k { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--primary); }
+  .bp-chip .v { font-size: 0.9rem; font-weight: 700; color: #312E81; margin-top: 0.08rem; }
   .bp-table-wrap { overflow-x: auto; border: 1px solid var(--gray-100); border-radius: 10px; }
   .bp-table { width: 100%; border-collapse: collapse; min-width: 860px; }
   .bp-table th { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gray-500); background: #F8FAFC; border-bottom: 1px solid var(--gray-200); padding: 0.55rem 0.6rem; text-align: left; }
@@ -96,7 +96,7 @@
   .bp-pname { font-weight: 700; color: #0F172A; }
   .bp-pmeta { font-size: 0.69rem; color: var(--gray-500); margin-top: 0.1rem; }
   .bp-tag { display: inline-flex; align-items: center; padding: 0.08rem 0.42rem; border-radius: 999px; font-size: 0.63rem; font-weight: 600; margin-right: 0.2rem; }
-  .bp-tag-income { background: #D1FAE5; color: #065F46; }
+  .bp-tag-income { background: #ECFDF5; color: #065F46; }
   .bp-tag-growth { background: #DBEAFE; color: #1E40AF; }
   .bp-tag-kr { background: #FEF3C7; color: #92400E; }
   .bp-tag-us { background: #EDE9FE; color: #5B21B6; }
@@ -155,7 +155,7 @@
   .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
   .tax-item label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--gray-500); margin-bottom: 0.25rem; }
   .tax-item input { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: var(--gray-50); color: var(--gray-800); outline: none; }
-  .tax-item input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(20,184,166,0.12); background: white; }
+  .tax-item input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); background: white; }
   .tax-note { margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; font-size: 0.75rem; color: #991B1B; line-height: 1.6; display: none; }
   .tax-note.visible { display: block; }
 
@@ -184,7 +184,7 @@
   .items-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--gray-50); vertical-align: middle; }
   .items-table tr:last-child td { border-bottom: none; }
   .items-table input { width: 100%; padding: 0.45rem 0.6rem; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 0.85rem; font-family: inherit; color: var(--gray-800); background: var(--gray-50); outline: none; transition: all 0.2s; }
-  .items-table input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(20,184,166,0.12); background: white; }
+  .items-table input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); background: white; }
   .items-table input::placeholder { color: var(--gray-300); }
   .monthly-cell { font-weight: 600; color: var(--primary); font-size: 0.85rem; white-space: nowrap; text-align: right; min-width: 90px; }
   .account-cell { font-size: 0.7rem; color: var(--gray-400); white-space: nowrap; }
@@ -195,7 +195,7 @@
   .tag-growth { background: #DBEAFE; color: #1E40AF; font-size: 0.6rem; margin-left: 2px; }
   .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: inherit; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
   .btn-add { background: var(--primary-bg); color: var(--primary); margin-top: 0.6rem; }
-  .btn-add:hover { background: #99F6E4; }
+  .btn-add:hover { background: #DDD6FE; }
   .btn-delete { background: none; color: var(--gray-300); padding: 0.3rem; border-radius: 6px; font-size: 1rem; line-height: 1; }
   .btn-delete:hover { background: #FEE2E2; color: var(--danger); }
   .footer { text-align: center; padding: 2rem 1rem; color: var(--gray-400); font-size: 0.78rem; }
@@ -212,8 +212,8 @@
 </head>
 <body>
 <div class="header">
-  <h1>현금흐름 포트폴리오 설계기</h1>
-  <p>목표 세후 월현금흐름에 맞춰 안정형 · 밸런스형 · 성장형 포트폴리오를 실제 상품으로 제안합니다</p>
+  <h1>내 자산 월 현금흐름 계산기</h1>
+  <p>금융자산으로 매달 얼마의 현금흐름을 만들 수 있을까?</p>
 </div>
 <div class="container">
 
@@ -1241,8 +1241,8 @@ function updateProjectionChart() {
         {
           label: '총 자산',
           data: proj.totalAsset,
-          borderColor: '#0F766E',
-          backgroundColor: 'rgba(15,118,110,0.10)',
+          borderColor: '#4F46E5',
+          backgroundColor: 'rgba(79,70,229,0.08)',
           fill: true,
           borderWidth: 2.5,
           pointRadius: 0,
@@ -1297,19 +1297,19 @@ function updateProjectionChart() {
               if (v >= 10000) return (v / 10000).toFixed(1) + '억';
               return (v / 1000).toFixed(0) + '천만';
             },
-            font: { family: 'IBM Plex Sans KR', size: 11 }
+            font: { family: 'Noto Sans KR', size: 11 }
           },
           grid: { color: '#F3F4F6' }
         },
         x: {
-          ticks: { font: { family: 'IBM Plex Sans KR', size: 11 }, maxTicksLimit: 15 },
+          ticks: { font: { family: 'Noto Sans KR', size: 11 }, maxTicksLimit: 15 },
           grid: { display: false }
         }
       },
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10, font: { family: 'IBM Plex Sans KR', size: 12 } }
+          labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10, font: { family: 'Noto Sans KR', size: 12 } }
         },
         tooltip: {
           callbacks: {
@@ -1331,7 +1331,7 @@ function updateProjectionChart() {
 
   document.getElementById('projectionSummary').innerHTML = `
     <div class="proj-stat"><div class="proj-val">${formatMoney(Math.round(initialTotal))}</div><div class="proj-label">초기 자산</div></div>
-    <div class="proj-stat"><div class="proj-val" style="color:#0F766E">${formatMoney(Math.round(finalTotal))}</div><div class="proj-label">${years}년 후 총 자산</div></div>
+    <div class="proj-stat"><div class="proj-val" style="color:#4F46E5">${formatMoney(Math.round(finalTotal))}</div><div class="proj-label">${years}년 후 총 자산</div></div>
     <div class="proj-stat"><div class="proj-val" style="color:#059669">+${formatMoney(Math.round(totalGain))}</div><div class="proj-label">자산 증가분</div></div>
     <div class="proj-stat"><div class="proj-val" style="color:#D97706">${cagr.toFixed(1)}%</div><div class="proj-label">연평균 성장률 (CAGR)</div></div>
     <div class="proj-stat"><div class="proj-val" style="color:#F59E0B">${formatMoney(Math.round(totalCumIncome))}</div><div class="proj-label">${years}년 누적 세후 인컴</div></div>
@@ -1344,13 +1344,13 @@ function initCharts() {
   pieChart = new Chart(document.getElementById('pieChart'), {
     type:'doughnut', data:{labels, datasets:[{data:[0,0,0,0], backgroundColor:colors, borderWidth:0, hoverOffset:8}]},
     options:{responsive:true, maintainAspectRatio:false, cutout:'65%',
-      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:10,font:{family:'IBM Plex Sans KR',size:12}}},
+      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:10,font:{family:'Noto Sans KR',size:12}}},
       tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+formatMoney(ctx.parsed)}}}}
   });
   barChart = new Chart(document.getElementById('barChart'), {
     type:'bar', data:{labels, datasets:[{label:'월 수익',data:[0,0,0,0],backgroundColor:colors.map(c=>c+'CC'),borderColor:colors,borderWidth:1,borderRadius:6,barPercentage:0.6}]},
     options:{responsive:true, maintainAspectRatio:false,
-      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'만',font:{family:'IBM Plex Sans KR',size:11}},grid:{color:'#F3F4F6'}},x:{ticks:{font:{family:'IBM Plex Sans KR',size:12}},grid:{display:false}}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'만',font:{family:'Noto Sans KR',size:11}},grid:{color:'#F3F4F6'}},x:{ticks:{font:{family:'Noto Sans KR',size:12}},grid:{display:false}}},
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' 월 '+formatMoney(ctx.parsed.y)}}}}
   });
 }
