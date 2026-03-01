@@ -860,7 +860,7 @@ function updatePresets() {
 
   container.innerHTML = PRESETS.map((preset, pi) => {
     const { totalNeeded, allocation } = calcTotalNeededDynamic(preset, target, pensionYears);
-    if (totalNeeded <= 0) return '<div class="preset-card"><div class="pc-title">인컴 상품이 없어 계산 불가</div></div>';
+    if (totalNeeded <= 0) { snapshots[pi] = null; return '<div class="preset-card"><div class="pc-title">인컴 상품이 없어 계산 불가</div></div>'; }
 
     const allocated = allocation.allocated;
     const totalWeight = preset.items.reduce((s, it) => s + it.weight, 0);
