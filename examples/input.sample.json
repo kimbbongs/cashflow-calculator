@@ -1,0 +1,21 @@
+{
+  "total_capital": 2000000000,
+  "target_net_monthly_cf": 5000000,
+  "buffer_months": 12,
+  "avoid_fin_income_comprehensive": true,
+  "use_highdiv_separate_tax": false,
+  "include_overseas_assets": true,
+  "assumptions": {
+    "yield_cash": 0.03,
+    "yield_bond": 0.04,
+    "yield_growth_dividend": 0.025,
+    "yield_highdiv_dividend": 0.06,
+    "withholding_tax_rate": 0.154,
+    "fin_income_threshold": 20000000,
+    "stt_rate_domestic": 0.002,
+    "extra_tax_rate_on_excess_fin_income": 0.264,
+    "overseas_capgain_tax_rate": 0.22,
+    "overseas_basic_deduction": 2500000
+  }
+}
+
