@@ -297,14 +297,14 @@ const PRESETS = [
       { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:10, account:'pension', isGrowth:true, expectedGrowth:10 },
       { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:5, account:'pension' },
       // 일반계좌 - 국내 배당
-      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:10, account:'general' },
-      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:8, account:'general' },
-      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:7, account:'general' },
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:8, account:'general' },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:7, account:'general' },
+      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:5, account:'general' },
       // 일반계좌 - 해외 직접투자
       { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
       { cat:'stock', name:'JEPI (미국직접)', rate:7.95, pct:10, account:'general', isForeign:true },
       // 일반계좌 - 성장
-      { cat:'stock', name:'S&P500 ETF (성장)', rate:0, pct:5, account:'general', isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'S&P500 ETF (성장)', rate:0, pct:10, account:'general', isGrowth:true, expectedGrowth:10 },
       // 안전자산
       { cat:'deposit', name:'CMA/MMF', rate:3.2, pct:5, account:'general' },
       { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:5, account:'general' },
@@ -399,7 +399,8 @@ function calcPresetGrossYield(preset) {
 }
 
 function updatePresets() {
-  const target = parseFloat(document.getElementById('targetMonthly').value) || 100;
+  const rawTarget = parseFloat(document.getElementById('targetMonthly').value);
+  const target = isNaN(rawTarget) ? 100 : rawTarget;
   const container = document.getElementById('presetCards');
 
   container.innerHTML = PRESETS.map((preset, pi) => {
@@ -490,7 +491,8 @@ function selectPreset(idx) {
 
 function applyPreset(idx) {
   const preset = PRESETS[idx];
-  const target = parseFloat(document.getElementById('targetMonthly').value) || 100;
+  const rawTarget = parseFloat(document.getElementById('targetMonthly').value);
+  const target = isNaN(rawTarget) ? 100 : rawTarget;
   const { totalIncomePct, netYield } = calcPresetNetYield(preset);
   const incomeFraction = totalIncomePct / 100;
   const totalNeeded = Math.round(target * 12 / (incomeFraction * netYield / 100));
@@ -541,15 +543,18 @@ function getMonthly(principal, rate) { return (principal * (rate / 100)) / 12; }
 function getItemTaxRate(item) {
   if (item.account === 'ISA') return 0; // 비과세 한도 내 가정
   if (item.account === 'pension') return 3.3; // 연금소득세
-  if (item.isForeign) return parseFloat(document.getElementById('taxForeign').value) || 15;
+  const foreignVal = parseFloat(document.getElementById('taxForeign').value);
+  if (item.isForeign) return isNaN(foreignVal) ? 15 : foreignVal;
   // general account
-  return parseFloat(document.getElementById('taxDividend').value) || 15.4;
+  const divVal = parseFloat(document.getElementById('taxDividend').value);
+  return isNaN(divVal) ? 15.4 : divVal;
 }
 
 function getItemTaxRateForBond(item) {
   if (item.account === 'ISA') return 0;
   if (item.account === 'pension') return 3.3;
-  return parseFloat(document.getElementById('taxInterest').value) || 15.4;
+  const intVal = parseFloat(document.getElementById('taxInterest').value);
+  return isNaN(intVal) ? 15.4 : intVal;
 }
 
 function addRow(cat) {
@@ -566,9 +571,9 @@ function renderTable(cat) {
   const tbody = document.getElementById('tbody-' + cat);
   if (data[cat].length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">항목을 추가해주세요</td></tr>'; return; }
   tbody.innerHTML = data[cat].map((item, idx) => {
-    const p = parseFloat(item.principal) || 0;
-    const r = parseFloat(item.rate) || 0;
-    const monthly = getMonthly(p, r);
+    const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
+    const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
+    const monthly = getMonthly(pp, rr);
     const accTag = item.account === 'ISA' ? '<span class="account-tag tag-isa">ISA</span>' :
                    item.account === 'pension' ? '<span class="account-tag tag-pension">연금</span>' :
                    '<span class="account-tag tag-general">일반</span>';
@@ -584,7 +589,65 @@ function renderTable(cat) {
   }).join('');
 }
 
-function updateItem(cat, idx, field, value) { data[cat][idx][field] = value; recalcAll(); saveData(); }
+function updateItem(cat, idx, field, value) { data[cat][idx][field] = value; recalcSummaryOnly(); saveData(); }
+
+function recalcSummaryOnly() {
+  // Update summary, charts, and per-category totals WITHOUT re-rendering tables (preserves input focus)
+  let totalAsset = 0, totalMonthly = 0, totalMonthlyAfterTax = 0;
+  let totalGrowthAsset = 0;
+  const catTotals = {}, catAssets = {};
+
+  CATEGORIES.forEach(cat => {
+    let catMonthly = 0, catAsset = 0;
+    data[cat].forEach(item => {
+      const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
+      const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
+      const m = getMonthly(pp, rr);
+      catAsset += pp;
+      if (!item.isGrowth) {
+        catMonthly += m;
+        const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
+        totalMonthlyAfterTax += m * (1 - taxRate / 100);
+      } else { totalGrowthAsset += pp; }
+    });
+    catTotals[cat] = catMonthly; catAssets[cat] = catAsset;
+    totalAsset += catAsset; totalMonthly += catMonthly;
+    document.getElementById('total-' + cat).textContent = catMonthly > 0 ? formatMoney(catMonthly) : '0원';
+
+    // Update only the monthly-cell values in existing rows (no full re-render)
+    const tbody = document.getElementById('tbody-' + cat);
+    const rows = tbody.querySelectorAll('tr:not(.empty-row)');
+    data[cat].forEach((item, idx) => {
+      if (rows[idx]) {
+        const cell = rows[idx].querySelector('.monthly-cell');
+        if (cell) {
+          const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
+          const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
+          const monthly = getMonthly(pp, rr);
+          cell.innerHTML = item.isGrowth ? '<span style="color:var(--gray-300)">성장</span>' : (monthly > 0 ? formatMoney(monthly) : '-');
+        }
+      }
+    });
+  });
+
+  document.getElementById('totalAsset').textContent = totalAsset > 0 ? formatMoney(totalAsset) : '0원';
+  document.getElementById('monthlyCashflow').textContent = totalMonthly > 0 ? formatMoney(totalMonthly) : '0원';
+  document.getElementById('yearlyCashflow').textContent = '연 ' + (totalMonthly > 0 ? formatMoney(totalMonthly * 12) : '0원');
+  document.getElementById('monthlyAfterTax').textContent = totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax) : '0원';
+  document.getElementById('yearlyAfterTax').textContent = '연 ' + (totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax * 12) : '0원');
+
+  const incomeAsset = totalAsset - totalGrowthAsset;
+  const avgRate = incomeAsset > 0 ? ((totalMonthly * 12) / incomeAsset * 100) : 0;
+  const avgRateAfter = incomeAsset > 0 ? ((totalMonthlyAfterTax * 12) / incomeAsset * 100) : 0;
+  document.getElementById('avgRate').textContent = avgRate.toFixed(2) + '%';
+  document.getElementById('avgRateAfterTax').textContent = '세후 ' + avgRateAfter.toFixed(2) + '%';
+
+  const growthPct = totalAsset > 0 ? (totalGrowthAsset / totalAsset * 100) : 0;
+  document.getElementById('growthRatio').textContent = growthPct.toFixed(0) + '%';
+  document.getElementById('growthAmount').textContent = totalGrowthAsset > 0 ? formatMoney(totalGrowthAsset) : '0원';
+
+  updateCharts(catAssets, catTotals);
+}
 
 function recalcAll() {
   let totalAsset = 0, totalMonthly = 0, totalMonthlyAfterTax = 0;
@@ -594,10 +657,10 @@ function recalcAll() {
   CATEGORIES.forEach(cat => {
     let catMonthly = 0, catAsset = 0;
     data[cat].forEach(item => {
-      const p = parseFloat(item.principal) || 0;
-      const r = parseFloat(item.rate) || 0;
-      const m = getMonthly(p, r);
-      catAsset += p;
+      const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
+      const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
+      const m = getMonthly(pp, rr);
+      catAsset += pp;
       if (!item.isGrowth) {
         catMonthly += m;
         const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
