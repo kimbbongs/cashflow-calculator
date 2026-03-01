@@ -22,13 +22,12 @@
     --radius: 12px;
   }
   body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; min-height: 100vh; }
-
   .header { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 2rem 1.5rem; text-align: center; }
   .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
   .header p { font-size: 0.95rem; opacity: 0.85; font-weight: 300; }
   .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
 
-  /* ── Preset Section ── */
+  /* Preset */
   .preset-section { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; color: white; box-shadow: var(--shadow-lg); }
   .preset-section h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; }
   .preset-section .desc { font-size: 0.82rem; opacity: 0.65; margin-bottom: 1.25rem; }
@@ -39,10 +38,8 @@
   .preset-input::placeholder { color: rgba(255,255,255,0.4); }
   .preset-input:focus { border-color: var(--primary-light); background: rgba(255,255,255,0.15); }
   .preset-unit { font-size: 0.85rem; opacity: 0.7; }
-
   .preset-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   @media (max-width: 900px) { .preset-cards { grid-template-columns: 1fr; } }
-
   .preset-card { background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; }
   .preset-card:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
   .preset-card.selected { border-color: var(--primary-light); background: rgba(79,70,229,0.2); box-shadow: 0 0 0 1px var(--primary-light); }
@@ -52,18 +49,13 @@
   .badge-income { background: #065F46; color: #6EE7B7; }
   .badge-balanced { background: #92400E; color: #FCD34D; }
   .badge-growth { background: #1E3A5F; color: #93C5FD; }
-
   .pc-ratio { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 0.7rem; gap: 2px; }
   .pc-ratio-income { background: #10B981; }
   .pc-ratio-growth { background: #3B82F6; }
-
   .pc-ratio-labels { display: flex; justify-content: space-between; font-size: 0.68rem; opacity: 0.6; margin-bottom: 0.7rem; }
-
   .pc-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.75rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .pc-stat { font-size: 0.75rem; }
   .pc-stat-val { font-weight: 700; font-size: 0.95rem; }
   .pc-stat-label { opacity: 0.55; font-size: 0.68rem; }
-
   .pc-accounts { margin-bottom: 0.7rem; }
   .pc-account-title { font-size: 0.72rem; font-weight: 600; opacity: 0.7; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.05em; }
   .pc-account-group { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem 0.6rem; margin-bottom: 0.4rem; }
@@ -72,45 +64,74 @@
   .pc-items { list-style: none; font-size: 0.7rem; }
   .pc-items li { padding: 0.1rem 0; opacity: 0.75; display: flex; justify-content: space-between; }
   .pc-items li span:last-child { font-weight: 600; opacity: 1; }
-
-  .pc-tax-warn { margin-top: 0.4rem; padding: 0.35rem 0.5rem; background: rgba(255,100,100,0.15); border-radius: 6px; font-size: 0.68rem; color: #FCA5A5; }
-  .pc-growth-note { margin-top: 0.4rem; padding: 0.35rem 0.5rem; background: rgba(59,130,246,0.15); border-radius: 6px; font-size: 0.68rem; color: #93C5FD; }
-
+  .pc-warn { margin-top: 0.4rem; padding: 0.35rem 0.5rem; border-radius: 6px; font-size: 0.68rem; }
+  .pc-warn-red { background: rgba(255,100,100,0.15); color: #FCA5A5; }
+  .pc-warn-yellow { background: rgba(251,191,36,0.15); color: #FCD34D; }
+  .pc-warn-blue { background: rgba(59,130,246,0.15); color: #93C5FD; }
+  .pc-warn-green { background: rgba(16,185,129,0.15); color: #6EE7B7; }
+  .pc-warn-info { background: rgba(99,102,241,0.12); color: #A5B4FC; }
   .preset-apply-btn { display: block; width: 100%; margin-top: 0.75rem; padding: 0.55rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: rgba(255,255,255,0.08); color: white; font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .preset-apply-btn:hover { background: rgba(255,255,255,0.18); }
   .preset-card.selected .preset-apply-btn { background: var(--primary); border-color: var(--primary); }
-
   .preset-footer { margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.72rem; opacity: 0.55; line-height: 1.8; }
 
-  /* ── Summary ── */
+  /* Capacity bar */
+  .capacity-bar-wrap { margin-top: 0.4rem; }
+  .capacity-label { font-size: 0.65rem; display: flex; justify-content: space-between; margin-bottom: 0.15rem; opacity: 0.7; }
+  .capacity-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+  .capacity-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .capacity-fill.fill-isa { background: #60A5FA; }
+  .capacity-fill.fill-pension { background: #FBBF24; }
+  .capacity-fill.fill-over { background: #F87171; }
+
+  /* Summary */
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
   .summary-card { background: white; border-radius: var(--radius); padding: 1.15rem 1.35rem; box-shadow: var(--shadow); border-left: 4px solid var(--primary); transition: transform 0.2s, box-shadow 0.2s; }
   .summary-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
   .summary-card.highlight { border-left-color: var(--success); background: var(--success-bg); }
   .summary-card.rate { border-left-color: var(--warning); }
   .summary-card.growth-card { border-left-color: #3B82F6; background: #EFF6FF; }
+  .summary-card.tax-card { border-left-color: var(--danger); background: #FEF2F2; }
   .summary-card .label { font-size: 0.75rem; color: var(--gray-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
   .summary-card .value { font-size: 1.45rem; font-weight: 700; color: var(--gray-900); }
   .summary-card.highlight .value { color: var(--success); }
   .summary-card.growth-card .value { color: #2563EB; }
+  .summary-card.tax-card .value { color: var(--danger); }
   .summary-card .sub { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
 
-  /* ── Charts ── */
+  /* Charts */
   .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
   @media (max-width: 768px) { .chart-section { grid-template-columns: 1fr; } }
   .chart-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
   .chart-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem; }
   .chart-wrapper { position: relative; height: 250px; }
 
-  /* ── Tax ── */
+  /* Projection chart */
+  .projection-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 2rem; display: none; }
+  .projection-section.visible { display: block; }
+  .projection-section h3 { font-size: 1.05rem; font-weight: 700; color: var(--gray-800); margin-bottom: 0.25rem; }
+  .projection-desc { font-size: 0.78rem; color: var(--gray-400); margin-bottom: 1rem; }
+  .projection-controls { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  .projection-controls label { font-size: 0.8rem; font-weight: 500; color: var(--gray-600); }
+  .projection-controls input, .projection-controls select { padding: 0.35rem 0.6rem; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 0.85rem; font-family: inherit; background: var(--gray-50); color: var(--gray-800); outline: none; }
+  .projection-controls input:focus, .projection-controls select:focus { border-color: var(--primary-light); }
+  .projection-chart-wrap { position: relative; height: 350px; }
+  .projection-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+  .proj-stat { background: var(--gray-50); border-radius: 8px; padding: 0.7rem 0.9rem; }
+  .proj-stat .proj-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+  .proj-stat .proj-label { font-size: 0.7rem; color: var(--gray-500); }
+
+  /* Tax */
   .tax-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem; }
   .tax-section h3 { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem; }
   .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
   .tax-item label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--gray-500); margin-bottom: 0.25rem; }
   .tax-item input { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: var(--gray-50); color: var(--gray-800); outline: none; }
   .tax-item input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); background: white; }
+  .tax-note { margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; font-size: 0.75rem; color: #991B1B; line-height: 1.6; display: none; }
+  .tax-note.visible { display: block; }
 
-  /* ── Asset Sections ── */
+  /* Asset Sections */
   .asset-section { background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow: hidden; animation: fadeIn 0.3s ease; }
   .asset-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; cursor: pointer; user-select: none; transition: background 0.15s; }
   .asset-header:hover { background: var(--gray-50); }
@@ -129,7 +150,6 @@
   .asset-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
   .asset-body.open { max-height: 3000px; }
   .asset-body-inner { padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--gray-100); padding-top: 1rem; }
-
   .items-table { width: 100%; border-collapse: collapse; }
   .items-table th { font-size: 0.7rem; font-weight: 600; color: var(--gray-500); text-align: left; padding: 0.45rem 0.6rem; border-bottom: 2px solid var(--gray-100); text-transform: uppercase; letter-spacing: 0.04em; }
   .items-table th:last-child { text-align: center; width: 45px; }
@@ -145,25 +165,18 @@
   .tag-pension { background: #FEF3C7; color: #92400E; }
   .tag-general { background: var(--gray-100); color: var(--gray-600); }
   .tag-growth { background: #DBEAFE; color: #1E40AF; font-size: 0.6rem; margin-left: 2px; }
-
   .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: inherit; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
   .btn-add { background: var(--primary-bg); color: var(--primary); margin-top: 0.6rem; }
   .btn-add:hover { background: #DDD6FE; }
   .btn-delete { background: none; color: var(--gray-300); padding: 0.3rem; border-radius: 6px; font-size: 1rem; line-height: 1; }
   .btn-delete:hover { background: #FEE2E2; color: var(--danger); }
-
   .footer { text-align: center; padding: 2rem 1rem; color: var(--gray-400); font-size: 0.78rem; }
   .empty-row td { text-align: center; color: var(--gray-300); font-size: 0.82rem; padding: 1.25rem !important; }
-
   @media (max-width: 640px) {
-    .header h1 { font-size: 1.3rem; }
-    .summary-grid { grid-template-columns: 1fr 1fr; }
-    .summary-card .value { font-size: 1.2rem; }
-    .container { padding: 1rem; }
-    .items-table { font-size: 0.8rem; }
-    .asset-header { padding: 0.8rem 1rem; }
-    .asset-body-inner { padding: 0 1rem 1rem; }
-    .items-table th, .items-table td { padding: 0.35rem 0.35rem; }
+    .header h1 { font-size: 1.3rem; } .summary-grid { grid-template-columns: 1fr 1fr; }
+    .summary-card .value { font-size: 1.2rem; } .container { padding: 1rem; }
+    .items-table { font-size: 0.8rem; } .asset-header { padding: 0.8rem 1rem; }
+    .asset-body-inner { padding: 0 1rem 1rem; } .items-table th, .items-table td { padding: 0.35rem 0.35rem; }
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 </style>
@@ -175,54 +188,84 @@
 </div>
 <div class="container">
 
-  <!-- ── Presets ── -->
+  <!-- Presets -->
   <div class="preset-section">
-    <h2>포트폴리오 추천 (계좌 배분 + 성장 전략 포함)</h2>
-    <div class="desc">목표 월 현금흐름을 입력하면, 절세 계좌 활용 + 인컴/성장 비중을 고려한 포트폴리오를 구성합니다.</div>
+    <h2>포트폴리오 시뮬레이션</h2>
+    <div class="desc">목표 월 현금흐름을 입력하면, 투자 성향별로 필요 자산과 구성을 시뮬레이션합니다. 절세 계좌 한도 내에서 자동 최적 배분합니다.</div>
     <div class="preset-top">
       <label>목표 월 현금흐름 (세후)</label>
       <div class="preset-input-group">
         <input type="number" class="preset-input" id="targetMonthly" value="100" placeholder="100" oninput="updatePresets()">
         <span class="preset-unit">만원 / 월</span>
       </div>
+      <label>연금 납입 기간</label>
+      <div class="preset-input-group">
+        <input type="number" class="preset-input" id="pensionYears" value="10" placeholder="10" min="1" max="40" style="width:80px;" oninput="updatePresets()">
+        <span class="preset-unit">년</span>
+      </div>
     </div>
     <div class="preset-cards" id="presetCards"></div>
     <div class="preset-footer">
-      <strong>절세 계좌 기준 (2026년):</strong><br>
-      ISA (중개형): 배당/이자 비과세 한도 500만원 (서민형 1,000만원), 초과분 9.9% 분리과세<br>
-      연금저축+IRP: 연 납입 1,800만원 한도, 세액공제 최대 900만원, 수령 시 연금소득세 3.3~5.5%<br>
-      일반계좌: 이자/배당 15.4% 원천징수, 해외주식 배당 15% 현지 원천징수, 양도세 22% (250만원 공제)<br>
-      금융소득종합과세: 연 2,000만원 초과 시 6.6~49.5% 종합과세<br>
-      * 성장자산은 배당이 아닌 시세차익 목적이므로 현금흐름에 미포함, 장기 자산증식 목적
+      <strong>자동 배분 규칙 (2026년 기준):</strong><br>
+      1. 수익률이 높은 상품부터 ISA에 우선 배정 (한도 2억, 연 소득 500만원 비과세 + 초과분 9.9% 분리과세)<br>
+      2. 남은 상품 중 연금 적격 상품을 연금계좌에 배정 (한도: 연 1,800만원 &times; 납입기간, IRP 위험자산 70% 제한)<br>
+      3. 나머지는 모두 일반계좌에 배정 (15.4% 원천징수, 연 2,000만원 초과 시 종합과세)<br>
+      4. 해외 직접투자(SCHD, JEPI, VOO, QQQ)는 ISA/연금 불가 &rarr; 자동으로 일반계좌 배정<br>
+      * 분배율(특히 JEPI, 리츠)은 시장 상황에 따라 변동되며, 고정 수익이 아닙니다
     </div>
   </div>
 
-  <!-- ── Summary ── -->
+  <!-- Summary -->
   <div class="summary-grid">
     <div class="summary-card"><div class="label">총 투자 자산</div><div class="value" id="totalAsset">0원</div></div>
     <div class="summary-card highlight"><div class="label">월 현금흐름 (세전)</div><div class="value" id="monthlyCashflow">0원</div><div class="sub" id="yearlyCashflow">연 0원</div></div>
-    <div class="summary-card highlight"><div class="label">월 현금흐름 (세후)</div><div class="value" id="monthlyAfterTax">0원</div><div class="sub" id="yearlyAfterTax">연 0원</div></div>
+    <div class="summary-card highlight"><div class="label">월 현금흐름 (원천징수 후)</div><div class="value" id="monthlyAfterTax">0원</div><div class="sub" id="yearlyAfterTax">연 0원</div></div>
+    <div class="summary-card tax-card" id="compTaxCard" style="display:none"><div class="label">종합과세 반영 시</div><div class="value" id="monthlyCompTax">0원</div><div class="sub" id="compTaxDetail"></div></div>
     <div class="summary-card rate"><div class="label">인컴 수익률</div><div class="value" id="avgRate">0.00%</div><div class="sub" id="avgRateAfterTax">세후 0.00%</div></div>
     <div class="summary-card growth-card"><div class="label">성장자산 비중</div><div class="value" id="growthRatio">0%</div><div class="sub" id="growthAmount">0원</div></div>
   </div>
 
-  <!-- ── Charts ── -->
+  <!-- Charts -->
   <div class="chart-section">
     <div class="chart-card"><h3>자산 유형별 비중</h3><div class="chart-wrapper"><canvas id="pieChart"></canvas></div></div>
     <div class="chart-card"><h3>유형별 월 현금흐름</h3><div class="chart-wrapper"><canvas id="barChart"></canvas></div></div>
   </div>
 
-  <!-- ── Tax ── -->
+  <!-- Projection Chart -->
+  <div class="projection-section" id="projectionSection">
+    <h3>연간 자산 변동 시뮬레이션</h3>
+    <div class="projection-desc">포트폴리오 적용 시 인컴 재투자 + 성장자산 수익을 반영한 장기 자산 추이</div>
+    <div class="projection-controls">
+      <label>시뮬레이션 기간</label>
+      <select id="projYears" onchange="updateProjectionChart()">
+        <option value="10">10년</option>
+        <option value="15">15년</option>
+        <option value="20" selected>20년</option>
+        <option value="30">30년</option>
+      </select>
+      <label>인컴 재투자</label>
+      <select id="projReinvest" onchange="updateProjectionChart()">
+        <option value="100">전액 재투자</option>
+        <option value="50">50% 재투자</option>
+        <option value="0" selected>재투자 안 함 (현금흐름 사용)</option>
+      </select>
+    </div>
+    <div class="projection-chart-wrap"><canvas id="projectionChart"></canvas></div>
+    <div class="projection-summary" id="projectionSummary"></div>
+  </div>
+
+  <!-- Tax -->
   <div class="tax-section">
     <h3>세금 설정</h3>
     <div class="tax-grid">
-      <div class="tax-item"><label>이자소득세율 (%)</label><input type="number" id="taxInterest" value="15.4" step="0.1" oninput="recalcAll()"></div>
-      <div class="tax-item"><label>국내 배당소득세율 (%)</label><input type="number" id="taxDividend" value="15.4" step="0.1" oninput="recalcAll()"></div>
-      <div class="tax-item"><label>해외 배당세율 (%)</label><input type="number" id="taxForeign" value="15.0" step="0.1" oninput="recalcAll()"></div>
+      <div class="tax-item"><label>이자소득세율 (%)</label><input type="number" id="taxInterest" value="15.4" step="0.1" oninput="recalcSummaryOnly()"></div>
+      <div class="tax-item"><label>국내 배당소득세율 (%)</label><input type="number" id="taxDividend" value="15.4" step="0.1" oninput="recalcSummaryOnly()"></div>
+      <div class="tax-item"><label>해외 배당세율 (%)</label><input type="number" id="taxForeign" value="15.0" step="0.1" oninput="recalcSummaryOnly()"></div>
     </div>
+    <div class="tax-note" id="taxNote"></div>
   </div>
 
-  <!-- ── Asset Sections ── -->
+  <!-- Asset Sections -->
   <div class="asset-section" id="section-deposit">
     <div class="asset-header" onclick="toggleSection('deposit')">
       <div class="asset-header-left"><div class="asset-icon deposit">🏦</div><div><div class="asset-title">예금 / 적금</div><div class="asset-subtitle">은행 예적금, CMA, MMF 등</div></div></div>
@@ -233,7 +276,6 @@
       <button class="btn btn-add" onclick="addRow('deposit')">+ 항목 추가</button>
     </div></div>
   </div>
-
   <div class="asset-section" id="section-stock">
     <div class="asset-header" onclick="toggleSection('stock')">
       <div class="asset-header-left"><div class="asset-icon stock">📈</div><div><div class="asset-title">주식 / ETF (인컴 + 성장)</div><div class="asset-subtitle">배당주, 배당 ETF, 성장 ETF 등</div></div></div>
@@ -244,7 +286,6 @@
       <button class="btn btn-add" onclick="addRow('stock')">+ 항목 추가</button>
     </div></div>
   </div>
-
   <div class="asset-section" id="section-bond">
     <div class="asset-header" onclick="toggleSection('bond')">
       <div class="asset-header-left"><div class="asset-icon bond">📜</div><div><div class="asset-title">채권</div><div class="asset-subtitle">국채, 회사채, 채권 ETF 등</div></div></div>
@@ -255,7 +296,6 @@
       <button class="btn btn-add" onclick="addRow('bond')">+ 항목 추가</button>
     </div></div>
   </div>
-
   <div class="asset-section" id="section-fund">
     <div class="asset-header" onclick="toggleSection('fund')">
       <div class="asset-header-left"><div class="asset-icon fund">💰</div><div><div class="asset-title">펀드 / 리츠</div><div class="asset-subtitle">펀드 분배금, 리츠 배당 등</div></div></div>
@@ -266,7 +306,6 @@
       <button class="btn btn-add" onclick="addRow('fund')">+ 항목 추가</button>
     </div></div>
   </div>
-
   <div class="footer">내 자산 월 현금흐름 계산기 &middot; 데이터는 브라우저에 저장됩니다</div>
 </div>
 
@@ -274,93 +313,106 @@
 const CATEGORIES = ['deposit','stock','bond','fund'];
 const COLORS = { deposit:'#3B82F6', stock:'#EC4899', bond:'#F59E0B', fund:'#10B981' };
 const LABELS = { deposit:'예금/적금', stock:'주식/ETF', bond:'채권', fund:'펀드/리츠' };
-
 let data = { deposit:[], stock:[], bond:[], fund:[] };
 let pieChart, barChart;
 
-// ── Preset Definitions ──
-// account: 'ISA' | 'pension' | 'general'
-// isGrowth: true = 성장자산 (배당 아닌 시세차익 목적, rate=0 for cashflow calc)
+// ── 종합과세 누진세율 (지방소득세 10% 포함) ──
+const COMP_TAX_BRACKETS = [
+  { limit: 1400, rate: 6.6 },
+  { limit: 5000, rate: 16.5 },
+  { limit: 8800, rate: 26.4 },
+  { limit: 15000, rate: 38.5 },
+  { limit: 30000, rate: 41.8 },
+  { limit: 50000, rate: 44.0 },
+  { limit: 100000, rate: 46.2 },
+  { limit: Infinity, rate: 49.5 }
+];
+
+function calcComprehensiveTaxExtra(annualFinancialIncome) {
+  if (annualFinancialIncome <= 2000) return { extra: 0, effectiveRate: 15.4 };
+  const excess = annualFinancialIncome - 2000;
+  let tax = 0, remaining = excess;
+  for (const bracket of COMP_TAX_BRACKETS) {
+    const prevLimit = COMP_TAX_BRACKETS.indexOf(bracket) === 0 ? 0 : COMP_TAX_BRACKETS[COMP_TAX_BRACKETS.indexOf(bracket) - 1].limit;
+    const width = bracket.limit - prevLimit;
+    const applicable = Math.min(remaining, width);
+    if (applicable <= 0) break;
+    tax += applicable * bracket.rate / 100;
+    remaining -= applicable;
+  }
+  const alreadyPaid = excess * 15.4 / 100;
+  const extra = Math.max(0, tax - alreadyPaid);
+  const totalTax = 2000 * 15.4 / 100 + tax;
+  const effectiveRate = annualFinancialIncome > 0 ? (totalTax / annualFinancialIncome * 100) : 0;
+  return { extra, effectiveRate };
+}
+
+// ── Account Limits (만원) ──
+const ISA_LIMIT = 20000;       // ISA 총 납입한도 2억
+const PENSION_ANNUAL = 1800;   // 연금저축+IRP 연 납입 1,800만원
+const ISA_NONTAX = 500;        // ISA 비과세 한도 연 500만원
+const ISA_EXCESS_RATE = 9.9;   // ISA 초과분 분리과세율
+const PENSION_TAX_RATE = 3.3;  // 연금 수령 시 세율
+
+// ── Account-agnostic Preset Definitions ──
 const PRESETS = [
   {
     name: '인컴 중심형',
     badge: 'badge-income', badgeText: '안정 인컴',
-    incomeRatio: 80, growthRatio: 20,
     desc: '현금흐름 극대화 + 20% 성장 재투자',
     items: [
-      // ISA 계좌 (비과세 한도 활용)
-      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:10, account:'ISA' },
-      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:8, account:'ISA' },
-      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:7, account:'ISA' },
-      // 연금저축+IRP (세액공제 + 과세이연)
-      { cat:'stock', name:'TIGER 미국배당다우존스 (연금)', rate:3.65, pct:5, account:'pension' },
-      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:10, account:'pension', isGrowth:true, expectedGrowth:10 },
-      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:5, account:'pension' },
-      // 일반계좌 - 국내 배당
-      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:8, account:'general' },
-      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:7, account:'general' },
-      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:5, account:'general' },
-      // 일반계좌 - 해외 직접투자
-      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
-      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, pct:10, account:'general', isForeign:true },
-      // 일반계좌 - 성장
-      { cat:'stock', name:'S&P500 ETF (성장)', rate:0, pct:10, account:'general', isGrowth:true, expectedGrowth:10 },
-      // 안전자산
-      { cat:'deposit', name:'CMA/MMF', rate:3.2, pct:5, account:'general' },
-      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:5, account:'general' },
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, weight:13, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, weight:18, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, weight:15, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, weight:8, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, weight:7, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, weight:5, isaEligible:false, pensionEligible:false, isRiskAsset:true, isForeign:true },
+      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, weight:10, isaEligible:false, pensionEligible:false, isRiskAsset:true, isForeign:true },
+      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, weight:15, isaEligible:false, pensionEligible:false, isRiskAsset:true, isGrowth:true, isForeign:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true, isGrowth:true, expectedGrowth:10 },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, weight:2, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'deposit', name:'CMA/MMF', rate:3.2, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:false },
     ]
   },
   {
     name: '균형 성장형',
     badge: 'badge-balanced', badgeText: '인컴+성장',
-    incomeRatio: 55, growthRatio: 45,
-    desc: '현금흐름 확보 + 45% 장기 자산 성장',
+    desc: '현금흐름 확보 + 장기 자산 성장',
     items: [
-      // ISA
-      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:8, account:'ISA' },
-      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:10, account:'ISA', isGrowth:true, expectedGrowth:10 },
-      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:7, account:'ISA' },
-      // 연금저축+IRP
-      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:10 },
-      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, pct:10, account:'pension', isGrowth:true, expectedGrowth:12 },
-      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:5, account:'pension' },
-      // 일반 - 해외직접
-      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
-      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, pct:5, account:'general', isForeign:true },
-      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, pct:10, account:'general', isGrowth:true, isForeign:true, expectedGrowth:10 },
-      // 일반 - 국내
-      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:5, account:'general' },
-      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:5, account:'general' },
-      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, pct:5, account:'general' },
-      // 안전자산
-      { cat:'deposit', name:'CMA/MMF', rate:3.2, pct:5, account:'general' },
-      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:5, account:'general' },
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, weight:8, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, weight:7, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'ESR켄달스퀘어리츠', rate:6.2, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, weight:15, isaEligible:true, pensionEligible:true, isRiskAsset:true, isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, weight:3, isaEligible:true, pensionEligible:true, isRiskAsset:true, isGrowth:true, expectedGrowth:12 },
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, weight:5, isaEligible:false, pensionEligible:false, isRiskAsset:true, isForeign:true },
+      { cat:'stock', name:'JEPI (미국직접)', rate:7.95, weight:5, isaEligible:false, pensionEligible:false, isRiskAsset:true, isForeign:true },
+      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, weight:20, isaEligible:false, pensionEligible:false, isRiskAsset:true, isGrowth:true, isForeign:true, expectedGrowth:10 },
+      { cat:'stock', name:'QQQ (미국직접, 성장)', rate:0, weight:7, isaEligible:false, pensionEligible:false, isRiskAsset:true, isGrowth:true, isForeign:true, expectedGrowth:12 },
+      { cat:'deposit', name:'CMA/MMF', rate:3.2, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, weight:3, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, weight:2, isaEligible:true, pensionEligible:true, isRiskAsset:false },
     ]
   },
   {
     name: '성장 중심형',
     badge: 'badge-growth', badgeText: '장기 성장',
-    incomeRatio: 35, growthRatio: 65,
-    desc: '최소 현금흐름 + 65% 공격적 자산 증식',
+    desc: '최소 현금흐름 + 공격적 자산 증식',
     items: [
-      // ISA
-      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:12, account:'ISA', isGrowth:true, expectedGrowth:10 },
-      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, pct:5, account:'ISA' },
-      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, pct:5, account:'ISA' },
-      // 연금저축+IRP
-      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:10 },
-      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, pct:15, account:'pension', isGrowth:true, expectedGrowth:12 },
-      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, pct:3, account:'pension' },
-      // 일반 - 해외직접 성장
-      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, pct:13, account:'general', isGrowth:true, isForeign:true, expectedGrowth:10 },
-      { cat:'stock', name:'QQQ (미국직접, 성장)', rate:0, pct:10, account:'general', isGrowth:true, isForeign:true, expectedGrowth:12 },
-      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, pct:5, account:'general', isForeign:true },
-      // 일반 - 국내 인컴
-      { cat:'stock', name:'KODEX 고배당주', rate:5.3, pct:5, account:'general' },
-      { cat:'fund',  name:'신한알파리츠', rate:6.6, pct:4, account:'general' },
-      // 안전자산
-      { cat:'deposit', name:'CMA/MMF (비상금)', rate:3.2, pct:5, account:'general' },
-      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, pct:3, account:'general' },
+      { cat:'stock', name:'TIGER 미국배당다우존스', rate:3.65, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'맥쿼리인프라', rate:6.8, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'KODEX 고배당주', rate:5.3, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'fund',  name:'신한알파리츠', rate:6.6, weight:4, isaEligible:true, pensionEligible:true, isRiskAsset:true },
+      { cat:'stock', name:'TIGER S&P500 (성장)', rate:0, weight:17, isaEligible:true, pensionEligible:true, isRiskAsset:true, isGrowth:true, expectedGrowth:10 },
+      { cat:'stock', name:'TIGER 미국나스닥100 (성장)', rate:0, weight:2, isaEligible:true, pensionEligible:true, isRiskAsset:true, isGrowth:true, expectedGrowth:12 },
+      { cat:'stock', name:'VOO (미국직접, 성장)', rate:0, weight:25, isaEligible:false, pensionEligible:false, isRiskAsset:true, isGrowth:true, isForeign:true, expectedGrowth:10 },
+      { cat:'stock', name:'QQQ (미국직접, 성장)', rate:0, weight:16, isaEligible:false, pensionEligible:false, isRiskAsset:true, isGrowth:true, isForeign:true, expectedGrowth:12 },
+      { cat:'stock', name:'SCHD (미국직접)', rate:3.5, weight:5, isaEligible:false, pensionEligible:false, isRiskAsset:true, isForeign:true },
+      { cat:'deposit', name:'CMA/MMF (비상금)', rate:3.2, weight:5, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'bond',    name:'KODEX 단기채권PLUS', rate:3.1, weight:3, isaEligible:true, pensionEligible:true, isRiskAsset:false },
+      { cat:'bond',  name:'KODEX 국고채10년액티브', rate:3.6, weight:3, isaEligible:true, pensionEligible:true, isRiskAsset:false },
     ]
   }
 ];
@@ -371,79 +423,324 @@ function formatMoney(man) {
   return Math.round(man).toLocaleString() + '만원';
 }
 
-function parseInputNumber(id, fallback) {
-  const value = parseFloat(document.getElementById(id).value);
-  return isNaN(value) ? fallback : value;
+function num(v, fb) { const n = parseFloat(v); return isNaN(n) ? fb : n; }
+
+// ── ISA 세금 계산 (연 소득 기준) ──
+function calcISATax(annualIncome) {
+  if (annualIncome <= 0) return 0;
+  if (annualIncome <= ISA_NONTAX) return 0;
+  return (annualIncome - ISA_NONTAX) * ISA_EXCESS_RATE / 100;
 }
 
-function calcRequiredAsset(targetMonthly, incomePct, netYield) {
-  const denominator = (incomePct / 100) * (netYield / 100);
-  if (!isFinite(targetMonthly) || targetMonthly < 0) return 0;
-  if (!isFinite(denominator) || denominator <= 0) return 0;
-  return Math.round((targetMonthly * 12) / denominator);
+// ── ISA 실효세율 (배분 시 사용) ──
+function calcISAEffectiveRate(annualIncome) {
+  if (annualIncome <= 0) return 0;
+  return calcISATax(annualIncome) / annualIncome * 100;
 }
 
-function calcPresetMix(preset) {
-  let incomePct = 0, growthPct = 0;
-  preset.items.forEach(it => {
-    if (it.isGrowth) growthPct += it.pct;
-    else incomePct += it.pct;
-  });
-  return { incomePct, growthPct };
-}
+// ── 핵심: 계좌 동적 배분 엔진 ──
+// totalAsset: 총 자산(만원), items: preset items with weight
+// pensionLimit: 연금 총 한도(만원)
+// Returns: { allocated: [{...item, account, amount}], isaUsed, pensionUsed, pensionRiskPct }
+function allocateToAccounts(totalAsset, items, pensionLimit) {
+  const totalWeight = items.reduce((s, it) => s + it.weight, 0);
+  if (totalWeight <= 0 || totalAsset <= 0) return { allocated: [], isaUsed: 0, pensionUsed: 0, pensionRiskPct: 0 };
 
-function calcPresetNetYield(preset) {
-  let totalIncomePct = 0, weightedRate = 0;
-  preset.items.forEach(it => {
-    if (!it.isGrowth && it.rate > 0) {
-      totalIncomePct += it.pct;
-      let taxRate = 15.4;
-      if (it.isForeign) taxRate = 15.0;
-      if (it.account === 'ISA') taxRate = 0; // 비과세 한도 내 가정
-      if (it.account === 'pension') taxRate = 3.3; // 연금소득세
-      const netRate = it.rate * (1 - taxRate / 100);
-      weightedRate += it.pct * netRate;
+  // Compute each item's target amount
+  const withAmount = items.map(it => ({
+    ...it,
+    targetAmount: Math.round(totalAsset * it.weight / totalWeight),
+    account: null,
+    amount: 0
+  }));
+
+  // Sort ISA-eligible items by yield (descending) for greedy assignment
+  // income items first sorted by rate desc, then growth items
+  const isaEligible = withAmount
+    .filter(it => it.isaEligible)
+    .sort((a, b) => {
+      const aYield = a.isGrowth ? 0 : a.rate;
+      const bYield = b.isGrowth ? 0 : b.rate;
+      return bYield - aYield;
+    });
+
+  let isaRemaining = ISA_LIMIT;
+  const isaAllocated = []; // items fully or partially in ISA
+
+  // Phase 1: Fill ISA
+  for (const it of isaEligible) {
+    if (isaRemaining <= 0) break;
+    const canFill = Math.min(it.targetAmount, isaRemaining);
+    if (canFill > 0) {
+      isaAllocated.push({ ref: it, isaAmount: canFill });
+      it._isaAmount = canFill;
+      isaRemaining -= canFill;
     }
-  });
-  return { totalIncomePct, netYield: totalIncomePct > 0 ? weightedRate / totalIncomePct : 0 };
+  }
+
+  // Phase 2: Fill pension with remaining (non-ISA-allocated) amounts
+  // Pension-eligible items that have remaining amount after ISA
+  const pensionCandidates = withAmount
+    .filter(it => it.pensionEligible)
+    .sort((a, b) => {
+      const aYield = a.isGrowth ? 0 : a.rate;
+      const bYield = b.isGrowth ? 0 : b.rate;
+      return bYield - aYield;
+    });
+
+  let pensionRemaining = pensionLimit;
+  let pensionRiskTotal = 0;
+  let pensionSafeTotal = 0;
+
+  for (const it of pensionCandidates) {
+    if (pensionRemaining <= 0) break;
+    const alreadyInISA = it._isaAmount || 0;
+    const leftover = it.targetAmount - alreadyInISA;
+    if (leftover <= 0) continue;
+
+    // IRP risk asset 70% check
+    if (it.isRiskAsset) {
+      // Max risk we can add: (pensionRiskTotal + x) / (pensionRiskTotal + pensionSafeTotal + x) <= 0.7
+      // => x <= (0.7 * pensionSafeTotal - 0.3 * pensionRiskTotal) / 0.3
+      // But also need to consider adding safe assets later...
+      // Simpler: track and allocate, then validate
+      const currentTotal = pensionRiskTotal + pensionSafeTotal;
+      // If we add `canFill`, risk ratio = (pensionRiskTotal + canFill) / (currentTotal + canFill)
+      // Must be <= 0.7
+      // canFill <= (0.7 * currentTotal - pensionRiskTotal) / 0.3
+      // But if currentTotal is 0, any risk is fine up to 70% of total pension
+      let maxRisk;
+      if (currentTotal === 0) {
+        // We'll need to ensure at least 30% safe - greedy approach, just limit risk to 70% of pension limit
+        maxRisk = Math.round(pensionLimit * 0.7);
+      } else {
+        maxRisk = Math.max(0, Math.floor((0.7 * currentTotal - pensionRiskTotal) / 0.3));
+      }
+      // Also can't exceed what's needed for this item or pension remaining
+      const canFill = Math.min(leftover, pensionRemaining, maxRisk - pensionRiskTotal);
+      if (canFill > 0) {
+        it._pensionAmount = canFill;
+        pensionRiskTotal += canFill;
+        pensionRemaining -= canFill;
+      }
+    } else {
+      // Safe asset - no 70% constraint
+      const canFill = Math.min(leftover, pensionRemaining);
+      if (canFill > 0) {
+        it._pensionAmount = canFill;
+        pensionSafeTotal += canFill;
+        pensionRemaining -= canFill;
+      }
+    }
+  }
+
+  // After greedy pass, if there's remaining pension capacity and safe assets haven't been fully allocated,
+  // try to add more risk assets (since adding safe assets increased the total)
+  // Do a second pass for risk assets
+  for (const it of pensionCandidates) {
+    if (pensionRemaining <= 0) break;
+    if (!it.isRiskAsset) continue;
+    const alreadyInISA = it._isaAmount || 0;
+    const alreadyInPension = it._pensionAmount || 0;
+    const leftover = it.targetAmount - alreadyInISA - alreadyInPension;
+    if (leftover <= 0) continue;
+
+    const currentTotal = pensionRiskTotal + pensionSafeTotal;
+    const maxRiskCanAdd = Math.max(0, Math.floor(0.7 * (currentTotal + leftover) - pensionRiskTotal));
+    const canFill = Math.min(leftover, pensionRemaining, maxRiskCanAdd);
+    if (canFill > 0) {
+      it._pensionAmount = (it._pensionAmount || 0) + canFill;
+      pensionRiskTotal += canFill;
+      pensionRemaining -= canFill;
+    }
+  }
+
+  // Phase 3: Build final allocation - split items into per-account entries
+  const allocated = [];
+  for (const it of withAmount) {
+    const isaAmt = it._isaAmount || 0;
+    const pensionAmt = it._pensionAmount || 0;
+    const generalAmt = it.targetAmount - isaAmt - pensionAmt;
+
+    if (isaAmt > 0) {
+      allocated.push({ ...it, account: 'ISA', amount: isaAmt });
+    }
+    if (pensionAmt > 0) {
+      allocated.push({ ...it, account: 'pension', amount: pensionAmt });
+    }
+    if (generalAmt > 0) {
+      allocated.push({ ...it, account: 'general', amount: generalAmt });
+    }
+  }
+
+  const pensionTotal = pensionRiskTotal + pensionSafeTotal;
+  const pensionRiskPct = pensionTotal > 0 ? (pensionRiskTotal / pensionTotal * 100) : 0;
+
+  return {
+    allocated,
+    isaUsed: ISA_LIMIT - isaRemaining,
+    pensionUsed: pensionTotal,
+    pensionRiskPct,
+    pensionRiskTotal,
+    pensionSafeTotal
+  };
 }
 
-function calcPresetGrossYield(preset) {
-  let totalIncomePct = 0, weightedRate = 0;
-  preset.items.forEach(it => {
-    if (!it.isGrowth && it.rate > 0) {
-      totalIncomePct += it.pct;
-      weightedRate += it.pct * it.rate;
+// ── 배분 결과로 세후 소득 계산 ──
+function computePortfolioTax(allocated) {
+  let isaIncome = 0, pensionIncome = 0, generalIncome = 0, generalForeignIncome = 0;
+  let totalPreTax = 0;
+
+  for (const it of allocated) {
+    if (it.isGrowth || it.rate <= 0) continue;
+    const income = it.amount * it.rate / 100;
+    totalPreTax += income;
+    if (it.account === 'ISA') isaIncome += income;
+    else if (it.account === 'pension') pensionIncome += income;
+    else {
+      if (it.isForeign) generalForeignIncome += income;
+      else generalIncome += income;
     }
+  }
+
+  const isaTax = calcISATax(isaIncome);
+  const pensionTax = pensionIncome * PENSION_TAX_RATE / 100;
+  const generalDomesticTax = generalIncome * 15.4 / 100;
+  const generalForeignTax = generalForeignIncome * 15.0 / 100;
+
+  const totalGeneralIncome = generalIncome + generalForeignIncome;
+  const compTax = calcComprehensiveTaxExtra(totalGeneralIncome);
+
+  const totalWithheld = isaTax + pensionTax + generalDomesticTax + generalForeignTax;
+  const afterWithholding = totalPreTax - totalWithheld;
+  const afterComp = afterWithholding - compTax.extra;
+
+  return {
+    totalPreTax,
+    isaIncome, pensionIncome, generalIncome: totalGeneralIncome,
+    isaTax, pensionTax,
+    totalWithheld,
+    afterWithholding,
+    compTaxExtra: compTax.extra,
+    compEffectiveRate: compTax.effectiveRate,
+    afterComp,
+    generalForeignIncome
+  };
+}
+
+// ── 절세 효과 계산 (전부 일반계좌 vs 최적 배분) ──
+function calcTaxSavings(allocated) {
+  // Current allocation tax
+  const currentTax = computePortfolioTax(allocated);
+
+  // All-general scenario: same items but all in general account
+  const allGeneral = allocated.map(it => ({ ...it, account: 'general' }));
+  // Merge same-name items
+  const merged = [];
+  for (const it of allGeneral) {
+    const existing = merged.find(m => m.name === it.name && m.cat === it.cat);
+    if (existing) existing.amount += it.amount;
+    else merged.push({ ...it });
+  }
+  const generalTax = computePortfolioTax(merged);
+
+  const withholdingSaving = generalTax.totalWithheld - currentTax.totalWithheld;
+  const compSaving = generalTax.compTaxExtra - currentTax.compTaxExtra;
+  const totalSaving = withholdingSaving + compSaving;
+
+  return { totalSaving, withholdingSaving, compSaving };
+}
+
+// ── 역산: 반복 수렴법으로 필요 총 자산 계산 ──
+function calcTotalNeededDynamic(preset, targetMonthly, pensionYears) {
+  if (targetMonthly <= 0) return { totalNeeded: 0, allocation: { allocated: [], isaUsed: 0, pensionUsed: 0, pensionRiskPct: 0 } };
+
+  const pensionLimit = PENSION_ANNUAL * pensionYears;
+  const targetAnnual = targetMonthly * 12;
+
+  // Initial estimate: assume all general account (15.4% tax)
+  const totalWeight = preset.items.reduce((s, it) => s + it.weight, 0);
+  if (totalWeight <= 0) return { totalNeeded: 0, allocation: { allocated: [], isaUsed: 0, pensionUsed: 0, pensionRiskPct: 0 } };
+
+  let weightedGrossReturn = 0;
+  preset.items.forEach(it => {
+    if (it.isGrowth || it.rate <= 0) return;
+    weightedGrossReturn += (it.weight / totalWeight) * it.rate;
   });
-  return totalIncomePct > 0 ? weightedRate / totalIncomePct : 0;
+
+  if (weightedGrossReturn <= 0) return { totalNeeded: 0, allocation: { allocated: [], isaUsed: 0, pensionUsed: 0, pensionRiskPct: 0 } };
+
+  // Initial guess: all at 15.4% tax
+  let totalNeeded = Math.round(targetAnnual / (weightedGrossReturn / 100 * (1 - 15.4 / 100)));
+
+  let allocation;
+  // Iterate to converge
+  for (let iter = 0; iter < 8; iter++) {
+    allocation = allocateToAccounts(totalNeeded, preset.items, pensionLimit);
+    const tax = computePortfolioTax(allocation.allocated);
+
+    let actualAfterTax = tax.afterWithholding;
+    // Also subtract comp tax extra if applicable
+    actualAfterTax -= tax.compTaxExtra;
+
+    if (actualAfterTax <= 0) {
+      totalNeeded = Math.round(totalNeeded * 2);
+      continue;
+    }
+
+    // Ratio adjustment
+    const ratio = targetAnnual / actualAfterTax;
+    const newTotal = Math.round(totalNeeded * ratio);
+
+    // Check convergence (within 0.5%)
+    if (Math.abs(newTotal - totalNeeded) / totalNeeded < 0.005) {
+      totalNeeded = newTotal;
+      break;
+    }
+    totalNeeded = newTotal;
+  }
+
+  // Final allocation with converged total
+  allocation = allocateToAccounts(totalNeeded, preset.items, pensionLimit);
+  return { totalNeeded, allocation };
 }
 
 function updatePresets() {
-  const target = parseInputNumber('targetMonthly', 100);
+  const target = num(document.getElementById('targetMonthly').value, 100);
+  const pensionYears = num(document.getElementById('pensionYears').value, 10);
   const container = document.getElementById('presetCards');
 
   container.innerHTML = PRESETS.map((preset, pi) => {
-    const { totalIncomePct, netYield } = calcPresetNetYield(preset);
-    const { incomePct, growthPct } = calcPresetMix(preset);
-    const grossYield = calcPresetGrossYield(preset);
+    const { totalNeeded, allocation } = calcTotalNeededDynamic(preset, target, pensionYears);
+    if (totalNeeded <= 0) return '<div class="preset-card"><div class="pc-title">인컴 상품이 없어 계산 불가</div></div>';
 
-    // Income portion of total asset provides the cash flow
-    // totalAsset * (totalIncomePct/100) * netYield/100 / 12 = target
-    // totalAsset = target * 12 / (totalIncomePct/100 * netYield/100)
-    const incomeFraction = totalIncomePct / 100;
-    const totalNeeded = calcRequiredAsset(target, totalIncomePct, netYield);
+    const allocated = allocation.allocated;
+    const totalWeight = preset.items.reduce((s, it) => s + it.weight, 0);
 
-    const growthAmount = Math.round(totalNeeded * growthPct / 100);
-    const annualIncome = totalNeeded * incomeFraction * grossYield / 100;
-
-    // Group items by account
-    const accounts = { ISA: [], pension: [], general: [] };
+    let incomePct = 0, growthPct = 0;
     preset.items.forEach(it => {
-      const amt = Math.round(totalNeeded * it.pct / 100);
-      accounts[it.account].push({ ...it, amount: amt });
+      const pct = it.weight / totalWeight * 100;
+      if (it.isGrowth) growthPct += pct; else incomePct += pct;
     });
+    incomePct = Math.round(incomePct);
+    growthPct = Math.round(growthPct);
 
+    const growthAmount = allocated.filter(it => it.isGrowth).reduce((s, it) => s + it.amount, 0);
+    const tax = computePortfolioTax(allocated);
+    const taxSavings = calcTaxSavings(allocated);
+
+    const monthlyAfterTax = tax.afterWithholding / 12;
+    const monthlyAfterComp = tax.afterComp / 12;
+
+    // Income asset for yield calc
+    const incomeAsset = allocated.filter(it => !it.isGrowth).reduce((s, it) => s + it.amount, 0);
+    const netYield = incomeAsset > 0 ? (tax.afterComp / incomeAsset * 100) : 0;
+
+    const pensionLimit = PENSION_ANNUAL * pensionYears;
+
+    // Group by account
+    const accounts = { ISA: [], pension: [], general: [] };
+    allocated.forEach(it => { accounts[it.account].push(it); });
     const accountNames = { ISA: 'ISA (중개형)', pension: '연금저축 + IRP', general: '일반 계좌' };
     const accountColors = { ISA: '#60A5FA', pension: '#FBBF24', general: '#9CA3AF' };
 
@@ -460,44 +757,63 @@ function updatePresets() {
       </div>`;
     });
 
-    let taxWarn = '';
-    if (annualIncome > 2000) {
-      taxWarn = `<div class="pc-tax-warn">연 금융소득 ~${formatMoney(Math.round(annualIncome))} > 2,000만원 → 종합과세 대상 가능</div>`;
+    // Capacity bars
+    const isaUsedPct = Math.min(100, allocation.isaUsed / ISA_LIMIT * 100);
+    const pensionUsedPct = pensionLimit > 0 ? Math.min(100, allocation.pensionUsed / pensionLimit * 100) : 0;
+
+    let capacityHtml = '';
+    // ISA capacity
+    capacityHtml += `<div class="capacity-bar-wrap">
+      <div class="capacity-label"><span>ISA</span><span>${formatMoney(allocation.isaUsed)} / ${formatMoney(ISA_LIMIT)} (${isaUsedPct.toFixed(1)}%)</span></div>
+      <div class="capacity-bar"><div class="capacity-fill ${isaUsedPct >= 100 ? 'fill-over' : 'fill-isa'}" style="width:${isaUsedPct}%"></div></div>
+    </div>`;
+    // Pension capacity
+    capacityHtml += `<div class="capacity-bar-wrap">
+      <div class="capacity-label"><span>연금</span><span>${formatMoney(allocation.pensionUsed)} / ${formatMoney(pensionLimit)} (${pensionUsedPct.toFixed(1)}%)</span></div>
+      <div class="capacity-bar"><div class="capacity-fill ${pensionUsedPct >= 100 ? 'fill-over' : 'fill-pension'}" style="width:${pensionUsedPct}%"></div></div>
+    </div>`;
+    // IRP risk ratio
+    if (allocation.pensionUsed > 0) {
+      capacityHtml += `<div class="capacity-bar-wrap">
+        <div class="capacity-label"><span>IRP 위험자산</span><span>${formatMoney(allocation.pensionRiskTotal || 0)} / ${formatMoney(allocation.pensionUsed)} (${allocation.pensionRiskPct.toFixed(0)}% / 70%)</span></div>
+        <div class="capacity-bar"><div class="capacity-fill ${allocation.pensionRiskPct > 70 ? 'fill-over' : 'fill-pension'}" style="width:${Math.min(100, allocation.pensionRiskPct / 70 * 100)}%"></div></div>
+      </div>`;
     }
 
-    // Expected growth
+    // Info messages
+    let infoHtml = '';
+    // ISA tax detail
+    if (tax.isaIncome > 0) {
+      const isaEffRate = calcISAEffectiveRate(tax.isaIncome);
+      infoHtml += `<div class="pc-warn pc-warn-blue">ISA 연 소득 ${formatMoney(Math.round(tax.isaIncome))}: 비과세 ${formatMoney(Math.min(tax.isaIncome, ISA_NONTAX))}, ${tax.isaIncome > ISA_NONTAX ? `초과분 9.9% → 실효 ${isaEffRate.toFixed(1)}%` : '전액 비과세'}</div>`;
+    }
+    // Comp tax info
+    if (tax.generalIncome > 2000) {
+      infoHtml += `<div class="pc-warn pc-warn-info">일반계좌 연 금융소득 ~${formatMoney(Math.round(tax.generalIncome))} > 2,000만원 → 종합과세 실효세율 ~${tax.compEffectiveRate.toFixed(1)}%</div>`;
+    }
+    // Tax savings
+    if (taxSavings.totalSaving > 0) {
+      infoHtml += `<div class="pc-warn pc-warn-green">절세 효과: 연 ~${formatMoney(Math.round(taxSavings.totalSaving))} (전부 일반계좌 대비)</div>`;
+    }
+
+    // Growth note
     let totalExpGrowth = 0;
-    preset.items.forEach(it => {
-      if (it.isGrowth && it.expectedGrowth) {
-        totalExpGrowth += (totalNeeded * it.pct / 100) * it.expectedGrowth / 100;
-      }
-    });
+    allocated.forEach(it => { if (it.isGrowth && it.expectedGrowth) totalExpGrowth += it.amount * it.expectedGrowth / 100; });
 
     return `<div class="preset-card" id="preset-${pi}" onclick="selectPreset(${pi})">
-      <div class="pc-header">
-        <div class="pc-title">${preset.name}</div>
-        <div class="pc-badge ${preset.badge}">${preset.badgeText}</div>
-      </div>
-      <div class="pc-ratio">
-        <div class="pc-ratio-income" style="flex:${incomePct}"></div>
-        <div class="pc-ratio-growth" style="flex:${growthPct}"></div>
-      </div>
-      <div class="pc-ratio-labels">
-        <span>인컴 ${incomePct}%</span>
-        <span>성장 ${growthPct}%</span>
-      </div>
+      <div class="pc-header"><div class="pc-title">${preset.name}</div><div class="pc-badge ${preset.badge}">${preset.badgeText}</div></div>
+      <div class="pc-ratio"><div class="pc-ratio-income" style="flex:${incomePct}"></div><div class="pc-ratio-growth" style="flex:${growthPct}"></div></div>
+      <div class="pc-ratio-labels"><span>인컴 ${incomePct}%</span><span>성장 ${growthPct}%</span></div>
       <div class="pc-summary">
         <div class="pc-stat"><div class="pc-stat-val">${formatMoney(totalNeeded)}</div><div class="pc-stat-label">필요 총 자산</div></div>
         <div class="pc-stat"><div class="pc-stat-val">${netYield.toFixed(1)}%</div><div class="pc-stat-label">세후 인컴 수익률</div></div>
-        <div class="pc-stat"><div class="pc-stat-val">${formatMoney(growthAmount)}</div><div class="pc-stat-label">성장자산 규모</div></div>
-        <div class="pc-stat"><div class="pc-stat-val">월 ${target}만원</div><div class="pc-stat-label">세후 현금흐름</div></div>
+        <div class="pc-stat"><div class="pc-stat-val">${formatMoney(Math.round(growthAmount))}</div><div class="pc-stat-label">성장자산 규모</div></div>
+        <div class="pc-stat"><div class="pc-stat-val">월 ~${Math.round(monthlyAfterComp)}만원</div><div class="pc-stat-label">세후 수령액</div></div>
       </div>
-      <div class="pc-accounts">
-        <div class="pc-account-title">계좌별 배분</div>
-        ${accountsHtml}
-      </div>
-      ${taxWarn}
-      ${totalExpGrowth > 0 ? `<div class="pc-growth-note">성장자산 연 예상 수익: +${formatMoney(Math.round(totalExpGrowth))} (재투자 시 복리 효과)</div>` : ''}
+      <div class="pc-accounts"><div class="pc-account-title">계좌별 배분 (자동 최적화)</div>${accountsHtml}</div>
+      ${capacityHtml}
+      ${infoHtml}
+      ${totalExpGrowth > 0 ? `<div class="pc-warn pc-warn-blue">성장자산 연 예상 수익: +${formatMoney(Math.round(totalExpGrowth))} (시세차익, 변동 가능)</div>` : ''}
       <button class="preset-apply-btn" onclick="event.stopPropagation();applyPreset(${pi})">이 포트폴리오 적용하기</button>
     </div>`;
   }).join('');
@@ -512,22 +828,17 @@ function selectPreset(idx) {
 
 function applyPreset(idx) {
   const preset = PRESETS[idx];
-  const target = parseInputNumber('targetMonthly', 100);
-  const { totalIncomePct, netYield } = calcPresetNetYield(preset);
-  const totalNeeded = calcRequiredAsset(target, totalIncomePct, netYield);
+  const target = num(document.getElementById('targetMonthly').value, 100);
+  const pensionYears = num(document.getElementById('pensionYears').value, 10);
+  const { totalNeeded, allocation } = calcTotalNeededDynamic(preset, target, pensionYears);
 
   data = { deposit:[], stock:[], bond:[], fund:[] };
-  preset.items.forEach(it => {
-    const amount = Math.round(totalNeeded * it.pct / 100);
+  allocation.allocated.forEach(it => {
     data[it.cat].push({
-      id: Date.now() + Math.random(),
-      name: it.name,
-      principal: amount,
-      rate: it.rate,
-      account: it.account || 'general',
-      isGrowth: it.isGrowth || false,
-      isForeign: it.isForeign || false,
-      expectedGrowth: it.expectedGrowth || 0
+      id: Date.now() + Math.random(), name: it.name,
+      principal: it.amount, rate: it.rate,
+      account: it.account || 'general', isGrowth: it.isGrowth || false,
+      isForeign: it.isForeign || false, expectedGrowth: it.expectedGrowth || 0
     });
   });
 
@@ -539,216 +850,361 @@ function applyPreset(idx) {
   recalcSummaryOnly();
   saveData();
 
+  // 연간 자산 변동 차트용 데이터 저장
+  lastAppliedAllocation = allocation.allocated;
+  updateProjectionChart();
+
   CATEGORIES.forEach(cat => {
-    const body = document.getElementById('body-' + cat);
-    const arrow = document.getElementById('arrow-' + cat);
+    const body = document.getElementById('body-' + cat), arrow = document.getElementById('arrow-' + cat);
     if (data[cat].length > 0 && !body.classList.contains('open')) { body.classList.add('open'); arrow.classList.add('open'); }
     else if (data[cat].length === 0 && body.classList.contains('open')) { body.classList.remove('open'); arrow.classList.remove('open'); }
   });
-
   document.getElementById('totalAsset').scrollIntoView({ behavior:'smooth', block:'center' });
   selectPreset(idx);
 }
 
-// ── Core Logic ──
-
-function toggleSection(cat) {
-  document.getElementById('body-' + cat).classList.toggle('open');
-  document.getElementById('arrow-' + cat).classList.toggle('open');
-}
-
+// ── Core ──
+function toggleSection(cat) { document.getElementById('body-'+cat).classList.toggle('open'); document.getElementById('arrow-'+cat).classList.toggle('open'); }
 function getMonthly(principal, rate) { return (principal * (rate / 100)) / 12; }
 
 function getItemTaxRate(item) {
-  if (item.account === 'ISA') return 0; // 비과세 한도 내 가정
-  if (item.account === 'pension') return 3.3; // 연금소득세
-  const foreignVal = parseFloat(document.getElementById('taxForeign').value);
-  if (item.isForeign) return isNaN(foreignVal) ? 15 : foreignVal;
-  // general account
-  const divVal = parseFloat(document.getElementById('taxDividend').value);
-  return isNaN(divVal) ? 15.4 : divVal;
+  if (item.account === 'ISA') return 0;
+  if (item.account === 'pension') return 3.3;
+  if (item.isForeign) return num(document.getElementById('taxForeign').value, 15);
+  return num(document.getElementById('taxDividend').value, 15.4);
 }
-
 function getItemTaxRateForBond(item) {
   if (item.account === 'ISA') return 0;
   if (item.account === 'pension') return 3.3;
-  const intVal = parseFloat(document.getElementById('taxInterest').value);
-  return isNaN(intVal) ? 15.4 : intVal;
+  return num(document.getElementById('taxInterest').value, 15.4);
 }
 
 function addRow(cat) {
-  data[cat].push({ id: Date.now()+Math.random(), name:'', principal:'', rate:'', account:'general', isGrowth:false, isForeign:false, expectedGrowth:0 });
-  renderTable(cat);
-  saveData();
+  data[cat].push({ id:Date.now()+Math.random(), name:'', principal:'', rate:'', account:'general', isGrowth:false, isForeign:false, expectedGrowth:0 });
+  renderTable(cat); saveData();
 }
-
-function deleteRow(cat, idx) { data[cat].splice(idx,1); renderTable(cat); recalcAll(); saveData(); }
-
+function deleteRow(cat, idx) { data[cat].splice(idx,1); renderTable(cat); recalcSummaryOnly(); saveData(); }
 function escapeHtml(str) { const d=document.createElement('div'); d.textContent=str||''; return d.innerHTML.replace(/"/g,'&quot;'); }
 
 function renderTable(cat) {
-  const tbody = document.getElementById('tbody-' + cat);
-  if (data[cat].length === 0) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">항목을 추가해주세요</td></tr>'; return; }
-  tbody.innerHTML = data[cat].map((item, idx) => {
-    const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
-    const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
+  const tbody = document.getElementById('tbody-'+cat);
+  if (data[cat].length === 0) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">항목을 추가해주세요</td></tr>'; return; }
+  tbody.innerHTML = data[cat].map((item,idx) => {
+    const pp = num(item.principal,0), rr = num(item.rate,0);
     const monthly = getMonthly(pp, rr);
-    const accTag = item.account === 'ISA' ? '<span class="account-tag tag-isa">ISA</span>' :
-                   item.account === 'pension' ? '<span class="account-tag tag-pension">연금</span>' :
-                   '<span class="account-tag tag-general">일반</span>';
-    const growthTag = item.isGrowth ? ' <span class="account-tag tag-growth">성장</span>' : '';
+    const accTag = item.account==='ISA'?'<span class="account-tag tag-isa">ISA</span>':item.account==='pension'?'<span class="account-tag tag-pension">연금</span>':'<span class="account-tag tag-general">일반</span>';
+    const growthTag = item.isGrowth?' <span class="account-tag tag-growth">성장</span>':'';
     return `<tr>
       <td><input type="text" placeholder="이름" value="${escapeHtml(item.name)}" oninput="updateItem('${cat}',${idx},'name',this.value)"></td>
       <td><input type="number" placeholder="0" value="${item.principal}" oninput="updateItem('${cat}',${idx},'principal',this.value)"></td>
       <td><input type="number" placeholder="0.0" step="0.1" value="${item.rate}" oninput="updateItem('${cat}',${idx},'rate',this.value)"></td>
       <td class="account-cell">${accTag}${growthTag}</td>
-      <td class="monthly-cell">${item.isGrowth ? '<span style="color:var(--gray-300)">성장</span>' : (monthly > 0 ? formatMoney(monthly) : '-')}</td>
+      <td class="monthly-cell">${item.isGrowth?'<span style="color:var(--gray-300)">성장</span>':(monthly>0?formatMoney(monthly):'-')}</td>
       <td><button class="btn btn-delete" onclick="deleteRow('${cat}',${idx})">&times;</button></td>
     </tr>`;
   }).join('');
 }
 
-function updateItem(cat, idx, field, value) { data[cat][idx][field] = value; recalcSummaryOnly(); saveData(); }
+function updateItem(cat,idx,field,value) { data[cat][idx][field]=value; recalcSummaryOnly(); saveData(); }
 
 function recalcSummaryOnly() {
-  // Update summary, charts, and per-category totals WITHOUT re-rendering tables (preserves input focus)
-  let totalAsset = 0, totalMonthly = 0, totalMonthlyAfterTax = 0;
-  let totalGrowthAsset = 0;
-  const catTotals = {}, catAssets = {};
+  let totalAsset=0, totalMonthly=0, totalMonthlyAfterTax=0, totalGrowthAsset=0;
+  let generalAnnualIncome = 0;
+  const catTotals={}, catAssets={};
 
   CATEGORIES.forEach(cat => {
-    let catMonthly = 0, catAsset = 0;
+    let catMonthly=0, catAsset=0;
     data[cat].forEach(item => {
-      const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
-      const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
-      const m = getMonthly(pp, rr);
+      const pp=num(item.principal,0), rr=num(item.rate,0);
+      const m=getMonthly(pp,rr);
       catAsset += pp;
       if (!item.isGrowth) {
         catMonthly += m;
-        const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
+        const taxRate = (cat==='deposit'||cat==='bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
         totalMonthlyAfterTax += m * (1 - taxRate / 100);
+        if (item.account === 'general') generalAnnualIncome += pp * rr / 100;
       } else { totalGrowthAsset += pp; }
     });
-    catTotals[cat] = catMonthly; catAssets[cat] = catAsset;
-    totalAsset += catAsset; totalMonthly += catMonthly;
-    document.getElementById('total-' + cat).textContent = catMonthly > 0 ? formatMoney(catMonthly) : '0원';
+    catTotals[cat]=catMonthly; catAssets[cat]=catAsset;
+    totalAsset+=catAsset; totalMonthly+=catMonthly;
+    document.getElementById('total-'+cat).textContent = catMonthly>0?formatMoney(catMonthly):'0원';
+    const rows = document.getElementById('tbody-'+cat).querySelectorAll('tr:not(.empty-row)');
+    data[cat].forEach((item,idx) => {
+      if (!rows[idx]) return;
+      const cell = rows[idx].querySelector('.monthly-cell');
+      if (!cell) return;
+      const pp=num(item.principal,0), rr=num(item.rate,0), monthly=getMonthly(pp,rr);
+      cell.innerHTML = item.isGrowth?'<span style="color:var(--gray-300)">성장</span>':(monthly>0?formatMoney(monthly):'-');
+    });
+  });
 
-    // Update only the monthly-cell values in existing rows (no full re-render)
-    const tbody = document.getElementById('tbody-' + cat);
-    const rows = tbody.querySelectorAll('tr:not(.empty-row)');
-    data[cat].forEach((item, idx) => {
-      if (rows[idx]) {
-        const cell = rows[idx].querySelector('.monthly-cell');
-        if (cell) {
-          const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
-          const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
-          const monthly = getMonthly(pp, rr);
-          cell.innerHTML = item.isGrowth ? '<span style="color:var(--gray-300)">성장</span>' : (monthly > 0 ? formatMoney(monthly) : '-');
+  document.getElementById('totalAsset').textContent = totalAsset>0?formatMoney(totalAsset):'0원';
+  document.getElementById('monthlyCashflow').textContent = totalMonthly>0?formatMoney(totalMonthly):'0원';
+  document.getElementById('yearlyCashflow').textContent = '연 '+(totalMonthly>0?formatMoney(totalMonthly*12):'0원');
+  document.getElementById('monthlyAfterTax').textContent = totalMonthlyAfterTax>0?formatMoney(totalMonthlyAfterTax):'0원';
+  document.getElementById('yearlyAfterTax').textContent = '연 '+(totalMonthlyAfterTax>0?formatMoney(totalMonthlyAfterTax*12):'0원');
+
+  const compTax = calcComprehensiveTaxExtra(generalAnnualIncome);
+  const compTaxCard = document.getElementById('compTaxCard');
+  const taxNote = document.getElementById('taxNote');
+
+  if (generalAnnualIncome > 2000) {
+    const monthlyAfterComp = totalMonthlyAfterTax - compTax.extra / 12;
+    compTaxCard.style.display = '';
+    document.getElementById('monthlyCompTax').textContent = formatMoney(Math.round(monthlyAfterComp));
+    document.getElementById('compTaxDetail').textContent = `실효세율 ~${compTax.effectiveRate.toFixed(1)}%, 추가세액 연 ~${formatMoney(Math.round(compTax.extra))}`;
+
+    taxNote.classList.add('visible');
+    taxNote.innerHTML = `<strong>종합과세 대상:</strong> 일반계좌 연 금융소득 ~${formatMoney(Math.round(generalAnnualIncome))}이 2,000만원을 초과합니다.<br>
+      초과분 ${formatMoney(Math.round(generalAnnualIncome - 2000))}에 대해 종합소득세율(6.6~49.5%)이 적용되며, 원천징수한 15.4%와의 차액을 추가 납부합니다.<br>
+      실효세율: ~${compTax.effectiveRate.toFixed(1)}% | 종합과세 반영 월 수령액: ~${formatMoney(Math.round(monthlyAfterComp))}`;
+  } else {
+    compTaxCard.style.display = 'none';
+    taxNote.classList.remove('visible');
+  }
+
+  const incomeAsset = totalAsset - totalGrowthAsset;
+  const avgRate = incomeAsset>0?((totalMonthly*12)/incomeAsset*100):0;
+  const avgRateAfter = incomeAsset>0?((totalMonthlyAfterTax*12)/incomeAsset*100):0;
+  document.getElementById('avgRate').textContent = avgRate.toFixed(2)+'%';
+  document.getElementById('avgRateAfterTax').textContent = '세후 '+avgRateAfter.toFixed(2)+'%';
+  const growthPct = totalAsset>0?(totalGrowthAsset/totalAsset*100):0;
+  document.getElementById('growthRatio').textContent = growthPct.toFixed(0)+'%';
+  document.getElementById('growthAmount').textContent = totalGrowthAsset>0?formatMoney(totalGrowthAsset):'0원';
+  updateCharts(catAssets,catTotals);
+}
+
+function recalcAll() { CATEGORIES.forEach(cat=>renderTable(cat)); recalcSummaryOnly(); }
+
+function updateCharts(catAssets,catTotals) {
+  if (pieChart) { pieChart.data.datasets[0].data=CATEGORIES.map(c=>catAssets[c]||0); pieChart.update(); }
+  if (barChart) { barChart.data.datasets[0].data=CATEGORIES.map(c=>catTotals[c]||0); barChart.update(); }
+}
+
+// ── 연간 자산 변동 시뮬레이션 ──
+let projChart = null;
+let lastAppliedAllocation = null; // applyPreset에서 저장
+
+function calcProjection(allocated, years, reinvestPct) {
+  // 현재 포트폴리오 기준으로 연간 시뮬레이션
+  // 인컴자산: 원금 유지, 배당 수익 발생 (reinvestPct만큼 재투자)
+  // 성장자산: expectedGrowth%만큼 자산가치 상승, 배당 없음
+  // 세금은 계좌별로 적용
+
+  let incomeAsset = 0, growthAsset = 0;
+  const incomeItems = [];
+  const growthItems = [];
+
+  for (const it of allocated) {
+    if (it.isGrowth) {
+      growthAsset += it.amount;
+      growthItems.push({ ...it });
+    } else {
+      incomeAsset += it.amount;
+      incomeItems.push({ ...it });
+    }
+  }
+
+  const result = {
+    years: [0],
+    totalAsset: [incomeAsset + growthAsset],
+    incomeAsset: [incomeAsset],
+    growthAsset: [growthAsset],
+    cumulativeIncome: [0],
+    annualIncome: [0]
+  };
+
+  let cumIncome = 0;
+  let currentIncomeAsset = incomeAsset;
+  let currentGrowthAssets = growthItems.map(it => ({ ...it, currentAmount: it.amount }));
+
+  for (let y = 1; y <= years; y++) {
+    // 1. 인컴 자산 배당 계산 (비율은 원래 배분 기준)
+    // 현재 인컴자산 총액에서 원래 배분 비율대로 각 상품 금액 산출
+    const incomeTotal = incomeItems.reduce((s, it) => s + it.amount, 0);
+    let annualDividend = 0;
+    let annualTax = 0;
+
+    for (const it of incomeItems) {
+      const ratio = incomeTotal > 0 ? it.amount / incomeTotal : 0;
+      const currentAmt = currentIncomeAsset * ratio;
+      const income = currentAmt * it.rate / 100;
+
+      let taxRate = 15.4;
+      if (it.account === 'ISA') taxRate = calcISAEffectiveRate(income);
+      else if (it.account === 'pension') taxRate = PENSION_TAX_RATE;
+      else if (it.isForeign) taxRate = 15.0;
+
+      annualDividend += income;
+      annualTax += income * taxRate / 100;
+    }
+
+    const netDividend = annualDividend - annualTax;
+    const reinvested = netDividend * reinvestPct / 100;
+    currentIncomeAsset += reinvested;
+    cumIncome += netDividend;
+
+    // 2. 성장자산 가치 상승
+    let totalGrowthNow = 0;
+    for (const git of currentGrowthAssets) {
+      git.currentAmount *= (1 + (git.expectedGrowth || 10) / 100);
+      totalGrowthNow += git.currentAmount;
+    }
+
+    result.years.push(y);
+    result.totalAsset.push(currentIncomeAsset + totalGrowthNow);
+    result.incomeAsset.push(currentIncomeAsset);
+    result.growthAsset.push(totalGrowthNow);
+    result.cumulativeIncome.push(cumIncome);
+    result.annualIncome.push(netDividend);
+  }
+
+  return result;
+}
+
+function updateProjectionChart() {
+  if (!lastAppliedAllocation || lastAppliedAllocation.length === 0) return;
+
+  const years = parseInt(document.getElementById('projYears').value) || 20;
+  const reinvest = parseInt(document.getElementById('projReinvest').value);
+  const proj = calcProjection(lastAppliedAllocation, years, reinvest);
+
+  const section = document.getElementById('projectionSection');
+  section.classList.add('visible');
+
+  if (projChart) { projChart.destroy(); projChart = null; }
+
+  const ctx = document.getElementById('projectionChart');
+  projChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: proj.years.map(y => y + '년'),
+      datasets: [
+        {
+          label: '총 자산',
+          data: proj.totalAsset,
+          borderColor: '#4F46E5',
+          backgroundColor: 'rgba(79,70,229,0.08)',
+          fill: true,
+          borderWidth: 2.5,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          tension: 0.3
+        },
+        {
+          label: '성장자산',
+          data: proj.growthAsset,
+          borderColor: '#3B82F6',
+          backgroundColor: 'rgba(59,130,246,0.06)',
+          fill: true,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderDash: [4, 2],
+          tension: 0.3
+        },
+        {
+          label: '인컴자산',
+          data: proj.incomeAsset,
+          borderColor: '#10B981',
+          backgroundColor: 'rgba(16,185,129,0.06)',
+          fill: true,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          tension: 0.3
+        },
+        {
+          label: '누적 세후 인컴',
+          data: proj.cumulativeIncome,
+          borderColor: '#F59E0B',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderDash: [6, 3],
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: v => {
+              if (v >= 100000) return (v / 10000).toFixed(0) + '억';
+              if (v >= 10000) return (v / 10000).toFixed(1) + '억';
+              return (v / 1000).toFixed(0) + '천만';
+            },
+            font: { family: 'Noto Sans KR', size: 11 }
+          },
+          grid: { color: '#F3F4F6' }
+        },
+        x: {
+          ticks: { font: { family: 'Noto Sans KR', size: 11 }, maxTicksLimit: 15 },
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10, font: { family: 'Noto Sans KR', size: 12 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + ctx.dataset.label + ': ' + formatMoney(Math.round(ctx.parsed.y))
+          }
         }
       }
-    });
+    }
   });
 
-  document.getElementById('totalAsset').textContent = totalAsset > 0 ? formatMoney(totalAsset) : '0원';
-  document.getElementById('monthlyCashflow').textContent = totalMonthly > 0 ? formatMoney(totalMonthly) : '0원';
-  document.getElementById('yearlyCashflow').textContent = '연 ' + (totalMonthly > 0 ? formatMoney(totalMonthly * 12) : '0원');
-  document.getElementById('monthlyAfterTax').textContent = totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax) : '0원';
-  document.getElementById('yearlyAfterTax').textContent = '연 ' + (totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax * 12) : '0원');
+  // Summary stats
+  const finalYear = proj.years.length - 1;
+  const initialTotal = proj.totalAsset[0];
+  const finalTotal = proj.totalAsset[finalYear];
+  const totalGain = finalTotal - initialTotal;
+  const cagr = (Math.pow(finalTotal / initialTotal, 1 / years) - 1) * 100;
+  const totalCumIncome = proj.cumulativeIncome[finalYear];
+  const avgAnnualIncome = totalCumIncome / years;
 
-  const incomeAsset = totalAsset - totalGrowthAsset;
-  const avgRate = incomeAsset > 0 ? ((totalMonthly * 12) / incomeAsset * 100) : 0;
-  const avgRateAfter = incomeAsset > 0 ? ((totalMonthlyAfterTax * 12) / incomeAsset * 100) : 0;
-  document.getElementById('avgRate').textContent = avgRate.toFixed(2) + '%';
-  document.getElementById('avgRateAfterTax').textContent = '세후 ' + avgRateAfter.toFixed(2) + '%';
-
-  const growthPct = totalAsset > 0 ? (totalGrowthAsset / totalAsset * 100) : 0;
-  document.getElementById('growthRatio').textContent = growthPct.toFixed(0) + '%';
-  document.getElementById('growthAmount').textContent = totalGrowthAsset > 0 ? formatMoney(totalGrowthAsset) : '0원';
-
-  updateCharts(catAssets, catTotals);
-}
-
-function recalcAll() {
-  let totalAsset = 0, totalMonthly = 0, totalMonthlyAfterTax = 0;
-  let totalGrowthAsset = 0;
-  const catTotals = {}, catAssets = {};
-
-  CATEGORIES.forEach(cat => {
-    let catMonthly = 0, catAsset = 0;
-    data[cat].forEach(item => {
-      const p = parseFloat(item.principal); const pp = isNaN(p) ? 0 : p;
-      const r = parseFloat(item.rate); const rr = isNaN(r) ? 0 : r;
-      const m = getMonthly(pp, rr);
-      catAsset += pp;
-      if (!item.isGrowth) {
-        catMonthly += m;
-        const taxRate = (cat === 'deposit' || cat === 'bond') ? getItemTaxRateForBond(item) : getItemTaxRate(item);
-        totalMonthlyAfterTax += m * (1 - taxRate / 100);
-      } else {
-        totalGrowthAsset += pp;
-      }
-    });
-    catTotals[cat] = catMonthly;
-    catAssets[cat] = catAsset;
-    totalAsset += catAsset;
-    totalMonthly += catMonthly;
-    document.getElementById('total-' + cat).textContent = catMonthly > 0 ? formatMoney(catMonthly) : '0원';
-    renderTable(cat);
-  });
-
-  document.getElementById('totalAsset').textContent = totalAsset > 0 ? formatMoney(totalAsset) : '0원';
-  document.getElementById('monthlyCashflow').textContent = totalMonthly > 0 ? formatMoney(totalMonthly) : '0원';
-  document.getElementById('yearlyCashflow').textContent = '연 ' + (totalMonthly > 0 ? formatMoney(totalMonthly * 12) : '0원');
-  document.getElementById('monthlyAfterTax').textContent = totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax) : '0원';
-  document.getElementById('yearlyAfterTax').textContent = '연 ' + (totalMonthlyAfterTax > 0 ? formatMoney(totalMonthlyAfterTax * 12) : '0원');
-
-  const incomeAsset = totalAsset - totalGrowthAsset;
-  const avgRate = incomeAsset > 0 ? ((totalMonthly * 12) / incomeAsset * 100) : 0;
-  const avgRateAfter = incomeAsset > 0 ? ((totalMonthlyAfterTax * 12) / incomeAsset * 100) : 0;
-  document.getElementById('avgRate').textContent = avgRate.toFixed(2) + '%';
-  document.getElementById('avgRateAfterTax').textContent = '세후 ' + avgRateAfter.toFixed(2) + '%';
-
-  const growthPct = totalAsset > 0 ? (totalGrowthAsset / totalAsset * 100) : 0;
-  document.getElementById('growthRatio').textContent = growthPct.toFixed(0) + '%';
-  document.getElementById('growthAmount').textContent = totalGrowthAsset > 0 ? formatMoney(totalGrowthAsset) : '0원';
-
-  updateCharts(catAssets, catTotals);
-}
-
-function updateCharts(catAssets, catTotals) {
-  if (pieChart) { pieChart.data.datasets[0].data = CATEGORIES.map(c => catAssets[c]||0); pieChart.update(); }
-  if (barChart) { barChart.data.datasets[0].data = CATEGORIES.map(c => catTotals[c]||0); barChart.update(); }
+  document.getElementById('projectionSummary').innerHTML = `
+    <div class="proj-stat"><div class="proj-val">${formatMoney(Math.round(initialTotal))}</div><div class="proj-label">초기 자산</div></div>
+    <div class="proj-stat"><div class="proj-val" style="color:#4F46E5">${formatMoney(Math.round(finalTotal))}</div><div class="proj-label">${years}년 후 총 자산</div></div>
+    <div class="proj-stat"><div class="proj-val" style="color:#059669">+${formatMoney(Math.round(totalGain))}</div><div class="proj-label">자산 증가분</div></div>
+    <div class="proj-stat"><div class="proj-val" style="color:#D97706">${cagr.toFixed(1)}%</div><div class="proj-label">연평균 성장률 (CAGR)</div></div>
+    <div class="proj-stat"><div class="proj-val" style="color:#F59E0B">${formatMoney(Math.round(totalCumIncome))}</div><div class="proj-label">${years}년 누적 세후 인컴</div></div>
+    <div class="proj-stat"><div class="proj-val">월 ~${Math.round(avgAnnualIncome / 12)}만원</div><div class="proj-label">평균 월 세후 인컴</div></div>
+  `;
 }
 
 function initCharts() {
-  const labels = CATEGORIES.map(c => LABELS[c]);
-  const colors = CATEGORIES.map(c => COLORS[c]);
+  const labels=CATEGORIES.map(c=>LABELS[c]), colors=CATEGORIES.map(c=>COLORS[c]);
   pieChart = new Chart(document.getElementById('pieChart'), {
-    type:'doughnut', data:{ labels, datasets:[{ data:[0,0,0,0], backgroundColor:colors, borderWidth:0, hoverOffset:8 }] },
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'65%',
-      plugins:{ legend:{ position:'bottom', labels:{ padding:14, usePointStyle:true, pointStyleWidth:10, font:{family:'Noto Sans KR',size:12} } },
-      tooltip:{ callbacks:{ label: ctx => ' '+ctx.label+': '+formatMoney(ctx.parsed) } } } }
+    type:'doughnut', data:{labels, datasets:[{data:[0,0,0,0], backgroundColor:colors, borderWidth:0, hoverOffset:8}]},
+    options:{responsive:true, maintainAspectRatio:false, cutout:'65%',
+      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:10,font:{family:'Noto Sans KR',size:12}}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+formatMoney(ctx.parsed)}}}}
   });
   barChart = new Chart(document.getElementById('barChart'), {
-    type:'bar', data:{ labels, datasets:[{ label:'월 수익 (만원)', data:[0,0,0,0], backgroundColor:colors.map(c=>c+'CC'), borderColor:colors, borderWidth:1, borderRadius:6, barPercentage:0.6 }] },
-    options:{ responsive:true, maintainAspectRatio:false,
-      scales:{ y:{ beginAtZero:true, ticks:{ callback:v=>v+'만', font:{family:'Noto Sans KR',size:11} }, grid:{color:'#F3F4F6'} }, x:{ ticks:{font:{family:'Noto Sans KR',size:12}}, grid:{display:false} } },
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:ctx=>' 월 '+formatMoney(ctx.parsed.y) } } } }
+    type:'bar', data:{labels, datasets:[{label:'월 수익',data:[0,0,0,0],backgroundColor:colors.map(c=>c+'CC'),borderColor:colors,borderWidth:1,borderRadius:6,barPercentage:0.6}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'만',font:{family:'Noto Sans KR',size:11}},grid:{color:'#F3F4F6'}},x:{ticks:{font:{family:'Noto Sans KR',size:12}},grid:{display:false}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' 월 '+formatMoney(ctx.parsed.y)}}}}
   });
 }
+function saveData() { try{localStorage.setItem('cashflow-v3',JSON.stringify(data));}catch(e){} }
+function loadData() { try{const s=localStorage.getItem('cashflow-v3');if(s)data=JSON.parse(s);}catch(e){} }
 
-function saveData() { try { localStorage.setItem('cashflow-v2', JSON.stringify(data)); } catch(e){} }
-function loadData() { try { const s=localStorage.getItem('cashflow-v2'); if(s) data=JSON.parse(s); } catch(e){} }
-
-// Init
-loadData();
-initCharts();
-CATEGORIES.forEach(cat => renderTable(cat));
-recalcAll();
-updatePresets();
-let opened = false;
-CATEGORIES.forEach(cat => { if (!opened && data[cat].length > 0) { toggleSection(cat); opened = true; } });
-if (!opened) toggleSection('deposit');
+loadData(); initCharts();
+CATEGORIES.forEach(cat=>renderTable(cat));
+recalcSummaryOnly(); updatePresets();
+let opened=false;
+CATEGORIES.forEach(cat=>{if(!opened&&data[cat].length>0){toggleSection(cat);opened=true;}});
+if(!opened) toggleSection('deposit');
 </script>
 </body>
 </html>
