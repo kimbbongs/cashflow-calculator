@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-02T03:11:49Z",
+  "updatedAt": "2026-03-03T03:14:51Z",
   "source": "github-actions-yfinance",
   "updatePolicy": "github-actions-daily",
   "presets": [
@@ -139,7 +139,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 15.7,
+          "expectedGrowth": 17.9,
           "thesis": "성장자산 국내상장 코어",
           "role": "growth"
         },
@@ -155,7 +155,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 16.9,
+          "expectedGrowth": 19.0,
           "thesis": "미국 대형주 장기 성장",
           "role": "growth"
         }
@@ -258,7 +258,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 15.7,
+          "expectedGrowth": 17.9,
           "thesis": "미국 주식시장 광범위 노출",
           "role": "growth"
         },
@@ -273,7 +273,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 17.5,
+          "expectedGrowth": 21.6,
           "thesis": "빅테크 성장 베타",
           "role": "growth"
         },
@@ -289,7 +289,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 16.9,
+          "expectedGrowth": 19.0,
           "thesis": "달러자산 성장 코어",
           "role": "growth"
         },
@@ -305,7 +305,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 20.1,
+          "expectedGrowth": 23.0,
           "thesis": "성장 모멘텀 강화",
           "role": "growth"
         },
@@ -407,7 +407,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 15.7,
+          "expectedGrowth": 17.9,
           "thesis": "국내계좌 성장 코어",
           "role": "growth"
         },
@@ -422,7 +422,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 17.5,
+          "expectedGrowth": 21.6,
           "thesis": "기술주 성장 엔진",
           "role": "growth"
         },
@@ -438,7 +438,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 16.9,
+          "expectedGrowth": 19.0,
           "thesis": "미국 대형주 직접 코어",
           "role": "growth"
         },
@@ -454,7 +454,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 20.1,
+          "expectedGrowth": 23.0,
           "thesis": "공격적 성장 확대",
           "role": "growth"
         },
@@ -504,5 +504,5 @@
     }
   ],
   "checkedSymbols": 31,
-  "updatedFields": 11
+  "updatedFields": 10
 }
