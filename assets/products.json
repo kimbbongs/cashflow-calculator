@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-04T02:50:37Z",
+  "updatedAt": "2026-03-05T03:10:12Z",
   "source": "github-actions-yfinance",
   "updatePolicy": "github-actions-daily",
   "presets": [
@@ -139,7 +139,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 18.4,
+          "expectedGrowth": 19.7,
           "thesis": "성장자산 국내상장 코어",
           "role": "growth"
         },
@@ -258,7 +258,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 18.4,
+          "expectedGrowth": 19.7,
           "thesis": "미국 주식시장 광범위 노출",
           "role": "growth"
         },
@@ -273,7 +273,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 21.6,
+          "expectedGrowth": 23.2,
           "thesis": "빅테크 성장 베타",
           "role": "growth"
         },
@@ -407,7 +407,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 18.4,
+          "expectedGrowth": 19.7,
           "thesis": "국내계좌 성장 코어",
           "role": "growth"
         },
@@ -422,7 +422,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 21.6,
+          "expectedGrowth": 23.2,
           "thesis": "기술주 성장 엔진",
           "role": "growth"
         },
