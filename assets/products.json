@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-17T03:14:05Z",
+  "updatedAt": "2026-03-18T03:21:26Z",
   "source": "github-actions-yfinance",
   "updatePolicy": "github-actions-daily",
   "presets": [
@@ -139,7 +139,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 24.2,
+          "expectedGrowth": 22.7,
           "thesis": "성장자산 국내상장 코어",
           "role": "growth"
         },
@@ -155,7 +155,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 19.2,
+          "expectedGrowth": 21.0,
           "thesis": "미국 대형주 장기 성장",
           "role": "growth"
         }
@@ -258,7 +258,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 24.2,
+          "expectedGrowth": 22.7,
           "thesis": "미국 주식시장 광범위 노출",
           "role": "growth"
         },
@@ -289,7 +289,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 19.2,
+          "expectedGrowth": 21.0,
           "thesis": "달러자산 성장 코어",
           "role": "growth"
         },
@@ -407,7 +407,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 24.2,
+          "expectedGrowth": 22.7,
           "thesis": "국내계좌 성장 코어",
           "role": "growth"
         },
@@ -438,7 +438,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 19.2,
+          "expectedGrowth": 21.0,
           "thesis": "미국 대형주 직접 코어",
           "role": "growth"
         },
@@ -504,5 +504,5 @@
     }
   ],
   "checkedSymbols": 31,
-  "updatedFields": 2
+  "updatedFields": 6
 }
