@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-24T03:14:14Z",
+  "updatedAt": "2026-03-25T03:19:33Z",
   "source": "github-actions-yfinance",
   "updatePolicy": "github-actions-daily",
   "presets": [
@@ -155,7 +155,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 15.6,
+          "expectedGrowth": 14.9,
           "thesis": "미국 대형주 장기 성장",
           "role": "growth"
         }
@@ -273,7 +273,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 23.7,
+          "expectedGrowth": 22.4,
           "thesis": "빅테크 성장 베타",
           "role": "growth"
         },
@@ -289,7 +289,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 15.6,
+          "expectedGrowth": 14.9,
           "thesis": "달러자산 성장 코어",
           "role": "growth"
         },
@@ -422,7 +422,7 @@
           "pensionEligible": true,
           "isRiskAsset": true,
           "isGrowth": true,
-          "expectedGrowth": 23.7,
+          "expectedGrowth": 22.4,
           "thesis": "기술주 성장 엔진",
           "role": "growth"
         },
@@ -438,7 +438,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 15.6,
+          "expectedGrowth": 14.9,
           "thesis": "미국 대형주 직접 코어",
           "role": "growth"
         },
@@ -504,5 +504,5 @@
     }
   ],
   "checkedSymbols": 31,
-  "updatedFields": 7
+  "updatedFields": 5
 }
