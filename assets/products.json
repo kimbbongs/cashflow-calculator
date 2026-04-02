@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-01T03:46:06Z",
+  "updatedAt": "2026-04-02T03:26:54Z",
   "source": "github-actions-yfinance",
   "updatePolicy": "github-actions-daily",
   "presets": [
@@ -305,7 +305,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 22.7,
+          "expectedGrowth": 23.3,
           "thesis": "성장 모멘텀 강화",
           "role": "growth"
         },
@@ -454,7 +454,7 @@
           "isRiskAsset": true,
           "isGrowth": true,
           "isForeign": true,
-          "expectedGrowth": 22.7,
+          "expectedGrowth": 23.3,
           "thesis": "공격적 성장 확대",
           "role": "growth"
         },
@@ -504,5 +504,5 @@
     }
   ],
   "checkedSymbols": 31,
-  "updatedFields": 5
+  "updatedFields": 2
 }
